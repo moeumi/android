@@ -1,4 +1,4 @@
-package com.brainer.moeumi
+package com.moeumi.client
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.brainer.moeumi.ui.theme.MoeumiTheme
+import com.moeumi.client.ui.theme.MoeumiTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

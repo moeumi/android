@@ -1,4 +1,4 @@
-package com.brainer.moeumi.ui.theme
+package com.moeumi.client.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

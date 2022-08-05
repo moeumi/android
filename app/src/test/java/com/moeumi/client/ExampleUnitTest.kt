@@ -1,4 +1,4 @@
-package com.brainer.moeumi
+package com.moeumi.client
 
 import org.junit.Test
 

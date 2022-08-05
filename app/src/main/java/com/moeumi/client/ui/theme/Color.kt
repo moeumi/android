@@ -1,4 +1,4 @@
-package com.brainer.moeumi.ui.theme
+package com.moeumi.client.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

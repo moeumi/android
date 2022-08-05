@@ -7,7 +7,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.brainer.moeumi"
+        applicationId "com.moeumi.client"
         minSdk 23
         targetSdk 32
         versionCode 1
