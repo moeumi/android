@@ -1,5 +1,7 @@
 package com.moeumi.client
 
+import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -9,9 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ScaleFactor
-import androidx.compose.ui.layout.lerp
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -22,9 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.skydoves.landscapist.glide.GlideImage
-import kotlin.math.absoluteValue
 
 val CARD_PADDING = 16.dp
 val HORIZONTAL_PADDING = 16.dp
@@ -33,6 +31,7 @@ val HORIZONTAL_PADDING = 16.dp
 @Preview
 @Composable
 fun MainBanner() {
+    val context = LocalContext.current
     HorizontalPager(
         count = 3,
         modifier = Modifier
@@ -68,6 +67,15 @@ fun MainBanner() {
 ////                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
 ////                        )
 //                    }
+                    .clickable {
+                        Toast
+                            .makeText(
+                                context,
+                                "Banner clicked",
+                                Toast.LENGTH_LONG
+                            )
+                            .show()
+                    }
             ) {
                 Box {
                     MainBannerImageView()
