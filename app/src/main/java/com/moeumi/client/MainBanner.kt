@@ -108,13 +108,14 @@ fun MainBannerImageView(image_url: String = "https://images.unsplash.com/photo-1
 fun MainBannerText(
     text: String = "인문학으로 만나는 유럽의 예술",
     fontSize: TextUnit = 28.sp,
+    color: Color = Color.White,
     textAlign: TextAlign = TextAlign.Start,
     modifier: Modifier = Modifier
 ) {
     Text(
         text = text,
         fontSize = fontSize,
-        color = Color.White,
+        color = color,
         fontWeight = FontWeight.ExtraBold,
         overflow = TextOverflow.Ellipsis,
         fontFamily = FontFamily.Cursive,
