@@ -36,6 +36,7 @@ fun MainView() {
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
+        MainAppBar()
         MainBanner()
         MainCategoryGroup()
         MainList()
