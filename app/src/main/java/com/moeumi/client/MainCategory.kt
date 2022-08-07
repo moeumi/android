@@ -1,6 +1,6 @@
 package com.moeumi.client
 
-import android.widget.Toast
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -70,13 +70,16 @@ fun MainCategory(title: String = "전체", width: Dp = 128.dp) {
             .clip(RoundedCornerShape(18.dp))
             .background(Color.Black)
             .clickable {
-                Toast
-                    .makeText(
-                        context,
-                        "Category selceted",
-                        Toast.LENGTH_LONG
-                    )
-                    .show()
+                context.startActivity(
+                    Intent(context, CategoryContentList::class.java)
+                )
+//                Toast
+//                    .makeText(
+//                        context,
+//                        "Category selceted",
+//                        Toast.LENGTH_LONG
+//                    )
+//                    .show()
             }
     ) {
         Text(
