@@ -62,6 +62,7 @@ dependencies {
 
     implementation "com.github.skydoves:landscapist-glide:1.6.0"
 
-    implementation "com.google.accompanist:accompanist-pager:0.26.0-alpha"
-    implementation "com.google.accompanist:accompanist-webview:0.26.0-alpha"
+    implementation "com.google.accompanist:accompanist-pager:$google_accompanist_version"
+    implementation "com.google.accompanist:accompanist-webview:$google_accompanist_version"
+
 }
