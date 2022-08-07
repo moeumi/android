@@ -14,6 +14,11 @@
         android:theme="@style/Theme.Moeumi"
         tools:targetApi="31">
         <activity
+            android:name=".CategoryContentList"
+            android:exported="false"
+            android:label="@string/title_activity_category_content_list"
+            android:theme="@style/Theme.Moeumi" />
+        <activity
             android:name=".WebViewActivity"
             android:exported="false"
             android:label="@string/title_activity_web_view"
