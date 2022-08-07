@@ -41,10 +41,10 @@ class WebViewActivity : ComponentActivity() {
 @Composable
 fun WebViewCompose(url: String = "https://home.pen.go.kr/yeyak/edu/lib/selectEduInfo.do?mi=14556&eduSeq=3502&srchRsSysId=&srchEduCtgry=&currPage=1&srchRsvSttus=&srchPeriodDiv=rcept&srchRsvBgnde=&srchRsvEndde=&srchRsvValue=&pageIndex=50") {
     val state = rememberWebViewState(url)
-    
+
     WebView(
         state,
         onCreated = { it.settings.javaScriptEnabled = true },
-        captureBackPresses = false
+        captureBackPresses = true
     )
 }
