@@ -1,9 +1,13 @@
 package com.moeumi.client
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -17,41 +21,56 @@ import com.google.accompanist.permissions.rememberPermissionState
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun GetLocationPermission(content: @Composable () -> Unit) {
+fun GetLocationPermission(
+    content: @Composable () -> Unit, requestCompose: @Composable () -> Unit = {
+        Text(
+            text = "위치권한이 필요해요.",
+        )
+    }
+) {
     val fineLocationPermissionState = rememberPermissionState(
         android.Manifest.permission.ACCESS_FINE_LOCATION
     )
 
-    val corseLocationPermissionState = rememberPermissionState(
-        android.Manifest.permission.ACCESS_COARSE_LOCATION
-    )
+    val isGranted = rememberSaveable { mutableStateOf(false) }
 
     when (fineLocationPermissionState.status) {
         // If the camera permission is granted, then show screen with the feature enabled
         PermissionStatus.Granted -> {
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                content()
-            }
+            isGranted.value = true
         }
         is PermissionStatus.Denied -> {
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+            isGranted.value = false
+        }
+    }
+
+    AnimatedVisibility(visible = isGranted.value) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .animateContentSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            content()
+        }
+    }
+
+    AnimatedVisibility(!isGranted.value) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            requestCompose()
+            Button(
+                onClick = { fineLocationPermissionState.launchPermissionRequest() },
+                modifier = Modifier.height(64.dp),
             ) {
-                Button(
-                    onClick = { fineLocationPermissionState.launchPermissionRequest() },
-                    modifier = Modifier.height(64.dp),
-                ) {
-                    Text(
-                        "Request permission", fontSize = 24.sp,
-                        textAlign = TextAlign.Center,
-                    )
-                }
+                Text(
+                    "권한 요청하기", fontSize = 24.sp,
+                    textAlign = TextAlign.Center,
+                )
             }
         }
     }
@@ -60,7 +79,6 @@ fun GetLocationPermission(content: @Composable () -> Unit) {
 @Preview
 @Composable
 fun GetLocationPermissionPreview() {
-    GetLocationPermission {
-        Text("Hello World")
-    }
+    GetLocationPermission(content = { Text("Hello World") })
+
 }
