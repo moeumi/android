@@ -64,5 +64,6 @@ dependencies {
 
     implementation "com.google.accompanist:accompanist-pager:$google_accompanist_version"
     implementation "com.google.accompanist:accompanist-webview:$google_accompanist_version"
+    implementation "com.google.accompanist:accompanist-permissions:$google_accompanist_version"
 
 }

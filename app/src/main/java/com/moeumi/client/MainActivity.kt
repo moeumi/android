@@ -31,6 +31,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Preview
 @Composable
 fun MainView() {
     Column(
@@ -39,7 +40,7 @@ fun MainView() {
         MainAppBar()
         MainBanner()
         MainCategoryGroup()
-        MainList()
+        GetLocationPermission { MainList() }
     }
 }
 
