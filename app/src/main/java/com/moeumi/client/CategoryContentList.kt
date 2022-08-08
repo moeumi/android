@@ -62,7 +62,7 @@ fun SelectCategoryContent() {
     var specificLocateSelected by rememberSaveable { mutableStateOf(true) }
     var allLocateSelected by rememberSaveable { mutableStateOf(false) }
     Row {
-        CategoryContent(isSelected = specificLocateSelected) {
+        CategoryContent(isSelected = specificLocateSelected, categoryText = "해운대구") {
             specificLocateSelected = !specificLocateSelected
 //            allLocateSelected = !allLocateSelected
         }
@@ -77,7 +77,7 @@ fun SelectCategoryContent() {
 @SuppressLint("UnusedCrossfadeTargetStateParameter", "UseCheckPermission")
 @Preview
 @Composable
-fun CategoryContent(isSelected: Boolean, onChange: () -> Unit) {
+fun CategoryContent(isSelected: Boolean, categoryText: String, onChange: () -> Unit) {
     val backgroundColor: Color
     val textColor: Color
     if (isSelected) {
