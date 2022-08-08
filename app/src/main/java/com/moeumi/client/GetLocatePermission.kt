@@ -1,7 +1,7 @@
 package com.moeumi.client
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -19,7 +19,7 @@ import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
 
 
-@OptIn(ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun GetLocationPermission(
     content: @Composable () -> Unit, requestCompose: @Composable () -> Unit = {
@@ -44,7 +44,11 @@ fun GetLocationPermission(
         }
     }
 
-    AnimatedVisibility(visible = isGranted.value) {
+    AnimatedVisibility(
+        visible = isGranted.value,
+        enter = fadeIn(animationSpec = tween(250)) +
+                slideInVertically(animationSpec = tween(250), initialOffsetY = { 64 }),
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -55,7 +59,10 @@ fun GetLocationPermission(
         }
     }
 
-    AnimatedVisibility(!isGranted.value) {
+    AnimatedVisibility(
+        !isGranted.value,
+        exit = scaleOut(animationSpec = tween(250)) + fadeOut(animationSpec = tween(250))
+    ) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
