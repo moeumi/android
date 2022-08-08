@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">moeumi</string>
+    <string name="title_activity_web_view">WebView</string>
+    <string name="title_activity_category_content_list">CategoryContentList</string>
 </resources>
