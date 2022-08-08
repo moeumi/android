@@ -1,18 +1,24 @@
 package com.moeumi.client
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -52,16 +58,26 @@ fun CategoryList() {
 @Preview
 @Composable
 fun SelectCategoryContent() {
-    val selected = rememberSaveable { listOf(true, false) }
+//    val selected = arrayListOf(true, false)
+    var specificLocateSelected by rememberSaveable { mutableStateOf(true) }
+    var allLocateSelected by rememberSaveable { mutableStateOf(false) }
     Row {
-        CategoryContent(selected[0])
-        CategoryContent(selected[1])
+        CategoryContent(isSelected = specificLocateSelected) {
+            specificLocateSelected = !specificLocateSelected
+//            allLocateSelected = !allLocateSelected
+        }
+        CategoryContent(isSelected = allLocateSelected, categoryText = "전체") {
+//            specificLocateSelected = !specificLocateSelected
+            allLocateSelected = !allLocateSelected
+        }
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
+@SuppressLint("UnusedCrossfadeTargetStateParameter", "UseCheckPermission")
 @Preview
 @Composable
-fun CategoryContent(isSelected: Boolean = false) {
+fun CategoryContent(isSelected: Boolean, onChange: () -> Unit) {
     val backgroundColor: Color
     val textColor: Color
     if (isSelected) {
@@ -72,28 +88,36 @@ fun CategoryContent(isSelected: Boolean = false) {
         textColor = Color.White
     }
 
-    OutlinedButton(
-        onClick = {
-            //TODO()//
-        },
-        shape = RoundedCornerShape(20.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = backgroundColor),
-        modifier = Modifier
-            .padding(8.dp)
-            .height(68.dp)
-            .width((273 / 1.8).dp),
-    ) {
-        Box(
+    val context = LocalContext.current
+
+    AnimatedContent(isSelected) {
+        OutlinedButton(
+            onClick = {
+                onChange()
+            },
+            shape = RoundedCornerShape(20.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = backgroundColor),
             modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
+                .animateEnterExit(
+                    enter = fadeIn() + scaleIn(),
+                    exit = fadeOut()
+                )
+                .padding(8.dp)
+                .height(68.dp)
+                .width((273 / 1.8).dp),
         ) {
-            Text(
-                text = "해운대구",
-                textAlign = TextAlign.Center,
-                color = textColor,
+            Box(
                 modifier = Modifier
-            )
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = categoryText,
+                    textAlign = TextAlign.Center,
+                    color = textColor,
+                    modifier = Modifier
+                )
+            }
         }
     }
 }
