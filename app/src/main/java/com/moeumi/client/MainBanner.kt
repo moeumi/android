@@ -1,8 +1,10 @@
 package com.moeumi.client
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
@@ -11,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -28,7 +31,7 @@ val CARD_PADDING = 33.dp
 val HORIZONTAL_PADDING = 16.dp
 
 @OptIn(ExperimentalPagerApi::class)
-@Preview(name="figma", widthDp = 412, heightDp = 892)
+@Preview(name = "figma", widthDp = 412, heightDp = 892)
 @Composable
 fun MainBanner() {
     val context = LocalContext.current
@@ -86,6 +89,30 @@ fun MainBanner() {
                         textAlign = TextAlign.End,
                         modifier = Modifier.align(Alignment.TopEnd)
                     )
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .padding(bottom = 8.dp)
+                    ) {
+                        for (j in 0 until 3) {
+                            if (j == page) {
+                                MainBannerToggleButton(
+                                    color = Color.Red,
+                                    shape = CircleShape
+                                )
+                            } else {
+                                MainBannerToggleButton(
+                                    color = Color.White,
+                                    shape = CircleShape
+                                )
+                            }
+                            Spacer(
+                                modifier = Modifier.padding(
+                                    horizontal = 4.dp
+                                )
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -136,6 +163,22 @@ fun MainBannerNameText() {
             fontSize = 16.sp,
             textAlign = TextAlign.End,
             modifier = Modifier.align(Alignment.TopEnd)
+        )
+    }
+}
+
+@Preview
+@Composable
+fun MainBannerToggleButton(color: Color = Color.White, shape: Shape = CircleShape) {
+    Column(
+        modifier = Modifier
+            .wrapContentSize(Alignment.Center)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(10.dp)
+                .clip(shape)
+                .background(color)
         )
     }
 }
