@@ -18,42 +18,40 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-val CATEGORY_GROUP_PADDING = 8.dp
 
-@Preview
+@Preview(name = "figma", widthDp = 412, heightDp = 892)
 @Composable
 fun MainCategoryGroup() {
     Box(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .padding(horizontal = CARD_PADDING)
+            .fillMaxWidth()
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterStart),
-//            verticalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
                 modifier = Modifier
-                    .height(128.dp)
                     .fillMaxWidth()
-                    .padding(CATEGORY_GROUP_PADDING)
                     .align(Alignment.CenterHorizontally),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                MainCategory(width = (128 + 64).dp)
-                MainCategory(width = (128 + 64).dp)
+                MainCategory(width = (82.4 * 2).dp)
+                Spacer(modifier = Modifier.width(16.dp))
+                MainCategory(width = (82.4 * 2).dp)
             }
+            Spacer(modifier = Modifier.height(16.dp))
             Row(
                 modifier = Modifier
-                    .height(128.dp)
                     .fillMaxWidth()
-                    .padding(CATEGORY_GROUP_PADDING)
                     .align(Alignment.CenterHorizontally),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                MainCategory()
-                MainCategory()
-                MainCategory()
+                MainCategory(width = 102.81.dp, modifier = Modifier.weight(1f))
+                MainCategory(width = 102.81.dp, modifier = Modifier.weight(1f))
+                MainCategory(width = 102.81.dp, modifier = Modifier.weight(1f))
             }
         }
     }
@@ -61,25 +59,18 @@ fun MainCategoryGroup() {
 
 @Preview
 @Composable
-fun MainCategory(title: String = "전체", width: Dp = 128.dp) {
+fun MainCategory(title: String = "전체", width: Dp = 128.dp, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     Box(
         modifier = Modifier
-            .height(128.dp)
+            .height(82.dp)
             .width(width)
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(13.dp))
             .background(Color.Black)
             .clickable {
                 context.startActivity(
                     Intent(context, CategoryContentList::class.java)
                 )
-//                Toast
-//                    .makeText(
-//                        context,
-//                        "Category selceted",
-//                        Toast.LENGTH_LONG
-//                    )
-//                    .show()
             }
     ) {
         Text(

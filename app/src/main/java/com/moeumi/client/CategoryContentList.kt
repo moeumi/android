@@ -95,7 +95,7 @@ fun CategoryContent(isSelected: Boolean, categoryText: String, onChange: () -> U
             onClick = {
                 onChange()
             },
-            shape = RoundedCornerShape(20.dp),
+            shape = RoundedCornerShape(11.dp),
             colors = ButtonDefaults.buttonColors(containerColor = backgroundColor),
             modifier = Modifier
                 .animateEnterExit(
@@ -104,7 +104,7 @@ fun CategoryContent(isSelected: Boolean, categoryText: String, onChange: () -> U
                 )
                 .padding(8.dp)
                 .height(68.dp)
-                .width((273 / 1.8).dp),
+                .width(164.8.dp),
         ) {
             Box(
                 modifier = Modifier

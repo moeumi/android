@@ -24,11 +24,11 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.skydoves.landscapist.glide.GlideImage
 
-val CARD_PADDING = 16.dp
+val CARD_PADDING = 33.dp
 val HORIZONTAL_PADDING = 16.dp
 
 @OptIn(ExperimentalPagerApi::class)
-@Preview
+@Preview(name="figma", widthDp = 412, heightDp = 892)
 @Composable
 fun MainBanner() {
     val context = LocalContext.current
@@ -37,7 +37,7 @@ fun MainBanner() {
         modifier = Modifier
             .padding(top = HORIZONTAL_PADDING, bottom = HORIZONTAL_PADDING)
             .fillMaxWidth()
-            .height(200.dp)
+            .height(180.dp)
     ) { page ->
         for (i in 0 until 3) {
             Card(
