@@ -3,7 +3,7 @@
 package com.moeumi.client
 
 import android.app.Activity
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Preview
@@ -69,13 +70,29 @@ fun ContentAppBar(
 @Preview
 @Composable
 fun CategoryContentListAppBar(titleText: String = "쿠킹") {
-    LargeTopAppBar(
-        title = {
-            Text(
-                titleText,
-                fontWeight = FontWeight.Bold,
-                fontSize = 32.sp,
-            )
-        },
-    )
+    val activity = LocalContext.current as Activity
+
+    Column {
+        Spacer(modifier = Modifier.height(52.dp))
+        SmallTopAppBar(
+            title = {
+                Text(
+                    titleText,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 32.sp,
+                )
+            },
+            navigationIcon = {
+                IconButton(
+                    onClick = { activity.finish() },
+                    modifier = Modifier.padding(start = 0.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_baseline_oui_back_24),
+                        contentDescription = "카테고리변경"
+                    )
+                }
+            }
+        )
+    }
 }
