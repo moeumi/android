@@ -30,9 +30,11 @@ val MainPadding = 16.dp
 @Preview
 @Composable
 fun MainList(currentLocationViewModel: GetCurrentLocation = GetCurrentLocation()) {
-    currentLocationViewModel.getCurrentLocation(LocalContext.current)
+    currentLocationViewModel: GetCurrentLocation = GetCurrentLocation(),
     val lat by currentLocationViewModel.latitude.collectAsState()
-    val long by currentLocationViewModel.longtitude.collectAsState()
+    val long by currentLocationViewModel.longitude.collectAsState()
+    val address by currentLocationViewModel.address.collectAsState()
+
 
     Column(
         modifier = Modifier
