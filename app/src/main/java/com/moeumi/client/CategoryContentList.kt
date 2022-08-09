@@ -17,8 +17,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,12 +45,25 @@ class CategoryContentList : ComponentActivity() {
 @Composable
 fun CategoryList() {
     Column(
-        modifier = Modifier.verticalScroll(rememberScrollState())
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = MainPadding * 2)
     ) {
         CategoryContentListAppBar()
         SelectCategoryContent()
+        Divider(
+            modifier = Modifier
+                .alpha(0.5f)
+                .padding(
+                    top = MainPadding / 2,
+                    bottom = MainPadding / 2,
+                    start = MainPadding / 2,
+                    end = MainPadding / 2
+                )
+        )
         for (i in 0 until 10) {
-            Content()
+            Content(place = "푸른도시가꾸기사업소", date = "2022-08-31")
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
@@ -87,8 +100,6 @@ fun CategoryContent(isSelected: Boolean, categoryText: String, onChange: () -> U
         backgroundColor = Color.Black
         textColor = Color.White
     }
-
-    val context = LocalContext.current
 
     AnimatedContent(isSelected) {
         OutlinedButton(

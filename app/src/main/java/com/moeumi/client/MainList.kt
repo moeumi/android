@@ -9,12 +9,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.font.FontWeight.Companion.Medium
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -39,7 +39,7 @@ fun MainList() {
     ) {
         MainListTitle()
         for (i in 0..10) {
-            Content()
+            Content(place = "푸른도시가꾸기사업소", date = "2022-08-31")
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
@@ -72,7 +72,7 @@ fun MainListTitle(title: String = "내 주변 프로그램") {
 
 @Preview
 @Composable
-fun Content(title: String = "<8월 금요시네마: 100% 울프: 푸들이 될 순 없어>") {
+fun Content(title: String = "<8월 금요시네마: 100% 울프: 푸들이 될 순 없어>", place: String, date: String) {
     val context = LocalContext.current
     Column(
         modifier = Modifier
@@ -96,29 +96,48 @@ fun Content(title: String = "<8월 금요시네마: 100% 울프: 푸들이 될 �
             Text(
                 title,
                 fontSize = 16.sp,
-//                fontWeight = Black,
+                fontWeight = Bold,
                 modifier = Modifier,
                 fontFamily = notoSanse,
                 maxLines = 1
             )
             Spacer(modifier = Modifier.height(16.dp))
-            Box(
-                modifier = Modifier
-                    .height(32.dp)
-                    .clip(shape = RoundedCornerShape((11).dp))
-                    .background(color = Color(parseColor("#FF7979")))
-            ) {
-                Text(
-                    text = "만덕도서관\t\t2022-08-31",
-                    fontWeight = Medium,
-                    fontFamily = notoSanse,
-                    color = Color(parseColor("#525252")),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        //                        .padding(4.dp)
-                        .align(Alignment.Center),
-                )
-            }
+            ContentDetailPlanView(place = "푸른도시가꾸기사업소", date = "2022-08-31")
         }
+    }
+}
+
+@Preview
+@Composable
+fun ContentDetailPlanView(place: String, date: String) {
+    Row(
+        modifier = Modifier
+            .width(250.dp)
+            .clip(shape = RoundedCornerShape((11).dp))
+            .background(color = Color(parseColor("#FF7979"))),
+    ) {
+        Text(
+            text = place,
+            fontWeight = Medium,
+            fontFamily = notoSanse,
+            color = Color(parseColor("#525252")),
+            textAlign = TextAlign.Start,
+            fontSize = 14.sp,
+            modifier = Modifier
+                .width(135.dp),
+            maxLines = 1
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Text(
+            text = date,
+            fontWeight = Medium,
+            fontFamily = notoSanse,
+            color = Color(parseColor("#525252")),
+            textAlign = TextAlign.Start,
+            fontSize = 14.sp,
+            modifier = Modifier
+                .clip(shape = RoundedCornerShape((11).dp))
+                .background(color = Color(parseColor("#FF7979"))),
+        )
     }
 }
