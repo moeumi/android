@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -21,12 +23,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.moeumi.client.view_model.GetCurrentLocation
 
 val MainPadding = 16.dp
 
 @Preview
 @Composable
-fun MainList() {
+fun MainList(currentLocationViewModel: GetCurrentLocation = GetCurrentLocation()) {
+    currentLocationViewModel.getCurrentLocation(LocalContext.current)
+    val lat by currentLocationViewModel.latitude.collectAsState()
+    val long by currentLocationViewModel.longtitude.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
