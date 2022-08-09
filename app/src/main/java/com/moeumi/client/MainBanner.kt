@@ -145,7 +145,7 @@ fun MainBannerText(
         color = color,
         fontWeight = FontWeight.ExtraBold,
         overflow = TextOverflow.Ellipsis,
-        fontFamily = FontFamily.Cursive,
+        fontFamily = notoSanse,
         lineHeight = 38.sp,
         textAlign = textAlign,
         modifier = modifier

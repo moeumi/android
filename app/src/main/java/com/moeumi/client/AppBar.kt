@@ -24,7 +24,7 @@ fun MainAppBar(address: String = "해운대구 센텀동로") {
                 Text(
                     text = address,
                     fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Cursive,
+                    fontFamily = notoSanse,
                     modifier = Modifier,
                 )
                 IconButton(
