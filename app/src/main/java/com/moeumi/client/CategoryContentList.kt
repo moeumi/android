@@ -64,10 +64,10 @@ fun SelectCategoryContent() {
     Row {
         CategoryContent(isSelected = specificLocateSelected, categoryText = "해운대구") {
             specificLocateSelected = !specificLocateSelected
-//            allLocateSelected = !allLocateSelected
+            allLocateSelected = !allLocateSelected
         }
         CategoryContent(isSelected = allLocateSelected, categoryText = "전체") {
-//            specificLocateSelected = !specificLocateSelected
+            specificLocateSelected = !specificLocateSelected
             allLocateSelected = !allLocateSelected
         }
     }
