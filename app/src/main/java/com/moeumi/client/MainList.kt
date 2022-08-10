@@ -6,6 +6,7 @@ import android.graphics.Color.parseColor
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -103,10 +104,11 @@ fun MainList(
 @Preview
 @Composable
 fun MainListTitle(title: String = "내 주변 프로그램") {
+    val textColor = if (isSystemInDarkTheme()) Color.White else Color.Black
     Text(
         text = title,
         fontSize = 28.sp,
-        color = Color.Black,
+        color = textColor,
         fontWeight = FontWeight.ExtraBold,
         overflow = TextOverflow.Ellipsis,
         fontFamily = notoSanse,
@@ -150,6 +152,7 @@ fun Content(
                 )
                 Text(
                     title,
+                    color = Color.Black,
                     fontSize = 18.sp,
                     fontWeight = Bold,
                     modifier = Modifier,
@@ -167,6 +170,11 @@ fun Content(
 @Preview
 @Composable
 fun ContentDetailPlanView(place: String, date: String) {
+    val textColor = if (isSystemInDarkTheme()) {
+        Color.Black
+    } else {
+        Color(parseColor("#525252"))
+    }
     Row(
         modifier = Modifier
             .width(250.dp)
@@ -177,7 +185,7 @@ fun ContentDetailPlanView(place: String, date: String) {
             text = place,
             fontWeight = Medium,
             fontFamily = notoSanse,
-            color = Color(parseColor("#525252")),
+            color = textColor,
             textAlign = TextAlign.Start,
             fontSize = 14.sp,
             overflow = TextOverflow.Ellipsis,
@@ -191,7 +199,7 @@ fun ContentDetailPlanView(place: String, date: String) {
             text = date,
             fontWeight = Medium,
             fontFamily = notoSanse,
-            color = Color(parseColor("#525252")),
+            color = textColor,
             textAlign = TextAlign.Start,
             fontSize = 14.sp,
             modifier = Modifier
