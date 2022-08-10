@@ -3,7 +3,6 @@ package com.moeumi.client
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color.parseColor
-import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -135,9 +134,6 @@ fun Content(
                 val intent = Intent(context, WebViewActivity::class.java)
                 intent.putExtra("url", url)
                 context.startActivity(intent)
-                Toast
-                    .makeText(context, "Item selected", Toast.LENGTH_SHORT)
-                    .show()
             }
             .background(Color(parseColor("#ebebeb")))
             .fillMaxWidth()
