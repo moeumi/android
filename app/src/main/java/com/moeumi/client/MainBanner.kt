@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.skydoves.landscapist.glide.GlideImage
+import readyTo
 
 val CARD_PADDING = 33.dp
 val HORIZONTAL_PADDING = 16.dp
@@ -74,7 +75,7 @@ fun MainBanner() {
                         Toast
                             .makeText(
                                 context,
-                                "Banner clicked",
+                                readyTo,
                                 Toast.LENGTH_LONG
                             )
                             .show()

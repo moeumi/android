@@ -3,6 +3,7 @@
 package com.moeumi.client
 
 import android.app.Activity
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -10,15 +11,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import readyTo
 
 @Preview
 @Composable
-fun MainAppBar(address: String = "해운대구 센텀동로") {
+fun MainAppBar(address: String = readyTo) {
+    val context = LocalContext.current
     CenterAlignedTopAppBar(
         title = {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -29,7 +31,7 @@ fun MainAppBar(address: String = "해운대구 센텀동로") {
                     modifier = Modifier,
                 )
                 IconButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { Toast.makeText(context, readyTo, Toast.LENGTH_SHORT).show() },
                     modifier = Modifier,
                 ) {
                     Icon(

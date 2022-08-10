@@ -1,6 +1,6 @@
 package com.moeumi.client
 
-import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import readyTo
 
 
 @Preview(name = "figma", widthDp = 412, heightDp = 892)
@@ -69,9 +70,12 @@ fun MainCategory(title: String = "전체", width: Dp = 128.dp, modifier: Modifie
             .clip(RoundedCornerShape(13.dp))
             .background(Color.Black)
             .clickable {
-                context.startActivity(
-                    Intent(context, CategoryContentList::class.java)
-                )
+                Toast
+                    .makeText(context, readyTo, Toast.LENGTH_SHORT)
+                    .show()
+//                context.startActivity(
+//                    Intent(context, CategoryContentList::class.java)
+//                )
             }
     ) {
         Text(
