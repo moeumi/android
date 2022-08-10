@@ -36,17 +36,19 @@ fun MainList(
 ) {
     val context = LocalContext.current
     currentLocationViewModel.getCurrentLocation(context)
-    val lat by currentLocationViewModel.latitude.collectAsState()
-    val long by currentLocationViewModel.longitude.collectAsState()
+//    val lat by currentLocationViewModel.latitude.collectAsState()
+//    val long by currentLocationViewModel.longitude.collectAsState()
     currentLocationViewModel.getCurrentAddress(context)
     val address by currentLocationViewModel.address.collectAsState()
     contentViewModel.getContent(parameter = "/district/${address.region2DepthName}")
+    val isEnd by contentViewModel.isEnd.collectAsState()
 
     val contentList by contentViewModel.content.collectAsState()
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .animateContentSize()
             .padding(
                 top = MainPadding,
                 bottom = MainPadding,
@@ -54,7 +56,7 @@ fun MainList(
                 end = CARD_PADDING
             )
     ) {
-        MainListTitle("${address.region2DepthName} 주변의 프로그램")
+        MainListTitle("내주변 프로그램")
 //        Text(text = "Address: ${address.region2DepthName} ${address.region3DepthName}")
         if (contentList.isNotEmpty()) {
             var page = 2
@@ -102,11 +104,16 @@ fun MainListTitle(title: String = "내 주변 프로그램") {
 
 @Preview
 @Composable
-fun Content(title: String = "<8월 금요시네마: 100% 울프: 푸들이 될 순 없어>", place: String, date: String, url: String) {
+fun Content(
+    title: String = "<8월 금요시네마: 100% 울프: 푸들이 될 순 없어>",
+    place: String,
+    date: String,
+    url: String
+) {
     val context = LocalContext.current
     Column(
         modifier = Modifier
-            .clip(shape = RoundedCornerShape((38 / 1.7).dp))
+            .clip(shape = RoundedCornerShape(15.dp))
             .clickable {
                 val intent = Intent(context, WebViewActivity::class.java)
                 intent.putExtra("url", url)
@@ -115,7 +122,7 @@ fun Content(title: String = "<8월 금요시네마: 100% 울프: 푸들이 될 �
                     .makeText(context, "Item selected", Toast.LENGTH_SHORT)
                     .show()
             }
-            .background(Color(0xFFF5F5F5))
+            .background(Color(parseColor("#ebebeb")))
             .fillMaxWidth()
             .height((115).dp)
             .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
@@ -124,16 +131,22 @@ fun Content(title: String = "<8월 금요시네마: 100% 울프: 푸들이 될 �
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            Text(
-                title,
-                fontSize = 16.sp,
-                fontWeight = Bold,
-                modifier = Modifier,
-                fontFamily = notoSanse,
-                maxLines = 1
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            ContentDetailPlanView(place = "푸른도시가꾸기사업소", date = "2022-08-31")
+            Row {
+                Spacer(
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+                Text(
+                    title,
+                    fontSize = 18.sp,
+                    fontWeight = Bold,
+                    modifier = Modifier,
+                    fontFamily = notoSanse,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                )
+            }
+            Spacer(modifier = Modifier.height(2.dp))
+            ContentDetailPlanView(place = "푸른도시가꾸기사업dfdfdfdfdfdf소", date = "2022-08-31")
         }
     }
 }
@@ -152,9 +165,11 @@ fun ContentDetailPlanView(place: String, date: String) {
             fontWeight = Medium,
             fontFamily = notoSanse,
             color = Color(parseColor("#525252")),
-            textAlign = TextAlign.Start,
+            textAlign = TextAlign.Center,
             fontSize = 14.sp,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier
+                .padding(start = 8.dp)
                 .width(135.dp),
             maxLines = 1
         )

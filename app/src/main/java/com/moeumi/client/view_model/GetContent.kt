@@ -18,6 +18,8 @@ class GetContentViewModel : ViewModel() {
     private val _content =
         MutableStateFlow(listOf(contentDummies))
     val content = _content.asStateFlow()
+    private val _isEnd = MutableStateFlow(false)
+    val isEnd = _isEnd.asStateFlow()
 
     private fun setContent(content: ContentData) {
         CoroutineScope(Dispatchers.Main).launch {
@@ -35,18 +37,28 @@ class GetContentViewModel : ViewModel() {
         val url = "$getContentUrl$parameter?page=$page"
         val gson = Gson()
         CoroutineScope(Dispatchers.IO).launch {
-            val doc = Jsoup.connect(url).get()
-            val body = doc.select("body").text()
-            val data: ContentData =
-                gson.fromJson(body, Array<ContentElement>::class.java).toList()
-            if (page == 1) {
-                setContent(data)
-            } else {
-//                delay(1000)
-//                addContent(data)
+            kotlin.runCatching {
+                if (!_isEnd.value) {
+                    val doc = Jsoup.connect(url).get()
+                    val body = doc.select("body").text()
+                    val data: ContentData =
+                        gson.fromJson(body, Array<ContentElement>::class.java).toList()
+                    if (page == 1) {
+                        setContent(data)
+                    } else if (page > 1) {
+                        addContent(data)
+                    } else if (data.isEmpty()) {
+                        _isEnd.value = true
+                        Log.d("getContent", "last")
+                    }
+                }
+            }.onSuccess {
+//                Log.d("getContent", it.toString())
+                Log.d("getContent", url)
+            }.onFailure {
+                _isEnd.value = true
+//                Log.d("getContent", "last")
             }
-            Log.d("getContent", data.toString())
-            Log.d("getContent", url)
         }
     }
 }

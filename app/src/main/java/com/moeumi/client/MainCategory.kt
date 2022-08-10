@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -38,9 +39,9 @@ fun MainCategoryGroup() {
                     .align(Alignment.CenterHorizontally),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                MainCategory(width = (82.4 * 2).dp)
+                MainCategory(title = "전체", width = (82.4 * 2).dp)
                 Spacer(modifier = Modifier.width(16.dp))
-                MainCategory(width = (82.4 * 2).dp)
+                MainCategory(title = "독서인문", width = (82.4 * 2).dp)
             }
             Spacer(modifier = Modifier.height(16.dp))
             Row(
@@ -49,9 +50,9 @@ fun MainCategoryGroup() {
                     .align(Alignment.CenterHorizontally),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                MainCategory(width = 102.81.dp, modifier = Modifier.weight(1f))
-                MainCategory(width = 102.81.dp, modifier = Modifier.weight(1f))
-                MainCategory(width = 102.81.dp, modifier = Modifier.weight(1f))
+                MainCategory(title = "자기계발", width = 102.81.dp, modifier = Modifier.weight(1f))
+                MainCategory(title = "체험", width = 102.81.dp, modifier = Modifier.weight(1f))
+                MainCategory(title = "유아", width = 102.81.dp, modifier = Modifier.weight(1f))
             }
         }
     }
@@ -75,11 +76,12 @@ fun MainCategory(title: String = "전체", width: Dp = 128.dp, modifier: Modifie
     ) {
         Text(
             text = title,
-            fontSize = 18.sp,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.ExtraBold,
+            fontFamily = notoSanse,
             color = Color.White,
             textAlign = TextAlign.Center,
             modifier = Modifier
-//                .clip(shape = RoundedCornerShape(18.dp))
                 .padding(8.dp)
                 .align(Alignment.Center),
         )
