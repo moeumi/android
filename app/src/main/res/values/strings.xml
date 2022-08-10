@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">클래스맵</string>
+    <string name="app_name">클래스차차</string>
     <string name="title_activity_web_view">WebView</string>
     <string name="title_activity_category_content_list">CategoryContentList</string>
 </resources>

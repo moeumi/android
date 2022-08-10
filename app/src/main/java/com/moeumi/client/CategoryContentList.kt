@@ -62,7 +62,7 @@ fun CategoryList() {
                 )
         )
         for (i in 0 until 10) {
-            Content(place = "푸른도시가꾸기사업소", date = "2022-08-31")
+            Content(place = "푸른도시가꾸기사업소", date = "2022-08-31", url = "https://www.google.com")
             Spacer(modifier = Modifier.height(16.dp))
         }
     }

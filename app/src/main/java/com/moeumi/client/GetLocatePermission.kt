@@ -87,5 +87,4 @@ fun GetLocationPermission(
 @Composable
 fun GetLocationPermissionPreview() {
     GetLocationPermission(content = { Text("Hello World") })
-
 }
