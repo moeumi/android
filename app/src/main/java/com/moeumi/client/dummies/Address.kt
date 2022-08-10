@@ -17,7 +17,7 @@ const val getContentUrl =
     "https://mwwneja7pl.execute-api.ap-northeast-2.amazonaws.com/dev/contents"
 
 val contentDummies = ContentElement(
-    center_name = "우동",
+    center_name = "더미데이터",
     placement_name = "우동",
     contents_title = "우동",
     contents_id = 1,
@@ -34,3 +34,5 @@ val contentDummies = ContentElement(
     wait_num = 1,
     apply_state = "우동"
 )
+
+const val readyTo = "준비중이에요"

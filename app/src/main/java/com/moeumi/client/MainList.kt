@@ -1,11 +1,16 @@
 package com.moeumi.client
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color.parseColor
 import android.widget.Toast
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,9 +30,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moeumi.client.view_model.GetContentViewModel
 import com.moeumi.client.view_model.GetCurrentLocationViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 
 val MainPadding = 16.dp
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Preview
 @Composable
 fun MainList(
@@ -35,43 +44,58 @@ fun MainList(
     contentViewModel: GetContentViewModel = GetContentViewModel()
 ) {
     val context = LocalContext.current
-    currentLocationViewModel.getCurrentLocation(context)
-//    val lat by currentLocationViewModel.latitude.collectAsState()
-//    val long by currentLocationViewModel.longitude.collectAsState()
-    currentLocationViewModel.getCurrentAddress(context)
+    val getLocationScope = CoroutineScope(Dispatchers.Default).async {
+        currentLocationViewModel.getCurrentLocation(context)
+        currentLocationViewModel.getCurrentAddress(context)
+    }
     val address by currentLocationViewModel.address.collectAsState()
-    contentViewModel.getContent(parameter = "/district/${address.region2DepthName}")
+    getLocationScope.onAwait.also {
+        contentViewModel.getContent(parameter = "/district/${address.region2DepthName}")
+    }
     val isEnd by contentViewModel.isEnd.collectAsState()
 
     val contentList by contentViewModel.content.collectAsState()
 
-    Column(
+//    LaunchedEffect(address) {
+//        contentViewModel.getContent(parameter = "/district/${address.region2DepthName}")
+//    }
+
+    LazyColumn(
+        state = rememberLazyListState(),
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize()
+            .height(900.dp)
             .padding(
                 top = MainPadding,
                 bottom = MainPadding,
                 start = CARD_PADDING,
                 end = CARD_PADDING
-            )
+            ),
     ) {
-        MainListTitle("내주변 프로그램")
-//        Text(text = "Address: ${address.region2DepthName} ${address.region3DepthName}")
-        if (contentList.isNotEmpty()) {
-            var page = 2
-            contentList.forEach {
+        item {
+            MainListTitle("내주변 프로그램")
+        }
+
+        if (contentList.isNotEmpty() || contentList[0].center_name == "더미데이터") {
+            itemsIndexed(contentList) { index, item ->
+                var page = 2
                 kotlin.runCatching {
                     Content(
-                        title = it.contents_title,
-                        place = it.center_name,
-                        date = it.apply_end_date,
-                        url = it.detail_link
+                        title = item.contents_title,
+                        place = item.center_name,
+                        date = item.apply_end_date,
+                        url = item.detail_link
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                 }
-                contentViewModel.getContent(page)
-                page += 1
+                if (index == contentList.lastIndex) {
+                    contentViewModel.getContent(
+                        page,
+                        parameter = "/district/${address.region2DepthName}"
+                    )
+                    page += 1
+                }
             }
         }
     }
@@ -80,13 +104,6 @@ fun MainList(
 @Preview
 @Composable
 fun MainListTitle(title: String = "내 주변 프로그램") {
-//    MainBannerText(
-//        title,
-//        28.sp,
-//        color = Color.Black,
-//        textAlign = TextAlign.Start,
-//        modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 8.dp)
-//    )
     Text(
         text = title,
         fontSize = 28.sp,
@@ -146,7 +163,7 @@ fun Content(
                 )
             }
             Spacer(modifier = Modifier.height(2.dp))
-            ContentDetailPlanView(place = "푸른도시가꾸기사업dfdfdfdfdfdf소", date = "2022-08-31")
+            ContentDetailPlanView(place = place, date = date)
         }
     }
 }
@@ -165,7 +182,7 @@ fun ContentDetailPlanView(place: String, date: String) {
             fontWeight = Medium,
             fontFamily = notoSanse,
             color = Color(parseColor("#525252")),
-            textAlign = TextAlign.Center,
+            textAlign = TextAlign.Start,
             fontSize = 14.sp,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier

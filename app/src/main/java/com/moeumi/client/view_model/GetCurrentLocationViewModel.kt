@@ -11,7 +11,6 @@ import com.google.gson.Gson
 import com.moeumi.client.data_type.Address
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -59,7 +58,6 @@ class GetCurrentLocationViewModel : ViewModel() {
                         setLongitude(location.longitude)
                     }
                 }
-            delay(1000)
         }
     }
 
@@ -70,27 +68,27 @@ class GetCurrentLocationViewModel : ViewModel() {
         val url = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=$long&y=$lat"
         val gson = Gson()
 
-        CoroutineScope(Dispatchers.IO).launch {
-            val client = OkHttpClient()
-            val request = Request.Builder()
-                .url(url)
-                .addHeader("Authorization", "KakaoAK ${"39b6c4f423c19eb1c773c4254ab40976"}")
-                .build()
+        if ((lat != 0.0 && long != 0.0)) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val client = OkHttpClient()
+                val request = Request.Builder()
+                    .url(url)
+                    .addHeader("Authorization", "KakaoAK ${"39b6c4f423c19eb1c773c4254ab40976"}")
+                    .build()
 
-//            kotlin.runCatching {
-            client.newCall(request).execute().also {
-                when (it.isSuccessful) {
-                    true -> {
-                        val result = gson.fromJson(it.body!!.string(), Address::class.java)
-                        setAddress(result)
-                        Log.i("address_info", "url, $result")
-                    }
-                    else -> {
-                        Log.i("address_info", "failed ${it.message}, $long $lat")
+                client.newCall(request).execute().also {
+                    when (it.isSuccessful) {
+                        true -> {
+                            val result = gson.fromJson(it.body!!.string(), Address::class.java)
+                            setAddress(result)
+                            Log.i("address_info", "url, $result")
+                        }
+                        else -> {
+                            Log.i("address_info", "failed ${it.message}, $long $lat")
+                        }
                     }
                 }
             }
-//            }
         }
     }
 }
