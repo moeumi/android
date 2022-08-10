@@ -17,6 +17,7 @@ import com.moeumi.client.ui.theme.MoeumiTheme
 class WebViewActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val url = intent.getStringExtra("url")
         setContent {
             MoeumiTheme {
                 // A surface container using the 'background' color from the theme
@@ -26,7 +27,9 @@ class WebViewActivity : ComponentActivity() {
                 ) {
                     Column {
                         ContentAppBar()
-                        WebViewCompose()
+                        if (url != null) {
+                            WebViewCompose(url = url)
+                        }
                     }
                 }
             }

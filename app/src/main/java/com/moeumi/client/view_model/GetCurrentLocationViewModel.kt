@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
-class GetCurrentLocation : ViewModel() {
+class GetCurrentLocationViewModel : ViewModel() {
     private var _latitude = MutableStateFlow(0.0)
     val latitude = _latitude.asStateFlow()
     private var _longitude = MutableStateFlow(0.0)
@@ -68,7 +68,7 @@ class GetCurrentLocation : ViewModel() {
         val lat = _latitude.value
         val long = _longitude.value
         val url = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=$long&y=$lat"
-        var gson = Gson()
+        val gson = Gson()
 
         CoroutineScope(Dispatchers.IO).launch {
             val client = OkHttpClient()

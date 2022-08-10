@@ -23,18 +23,26 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.moeumi.client.view_model.GetCurrentLocation
+import com.moeumi.client.view_model.GetContentViewModel
+import com.moeumi.client.view_model.GetCurrentLocationViewModel
 
 val MainPadding = 16.dp
 
 @Preview
 @Composable
-fun MainList(currentLocationViewModel: GetCurrentLocation = GetCurrentLocation()) {
-    currentLocationViewModel: GetCurrentLocation = GetCurrentLocation(),
+fun MainList(
+    currentLocationViewModel: GetCurrentLocationViewModel = GetCurrentLocationViewModel(),
+    contentViewModel: GetContentViewModel = GetContentViewModel()
+) {
+    val context = LocalContext.current
+    currentLocationViewModel.getCurrentLocation(context)
     val lat by currentLocationViewModel.latitude.collectAsState()
     val long by currentLocationViewModel.longitude.collectAsState()
+    currentLocationViewModel.getCurrentAddress(context)
     val address by currentLocationViewModel.address.collectAsState()
+    contentViewModel.getContent(parameter = "/district/${address.region2DepthName}")
 
+    val contentList by contentViewModel.content.collectAsState()
 
     Column(
         modifier = Modifier
@@ -46,10 +54,23 @@ fun MainList(currentLocationViewModel: GetCurrentLocation = GetCurrentLocation()
                 end = CARD_PADDING
             )
     ) {
-        MainListTitle()
-        for (i in 0..10) {
-            Content(place = "푸른도시가꾸기사업소", date = "2022-08-31")
-            Spacer(modifier = Modifier.height(16.dp))
+        MainListTitle("${address.region2DepthName} 주변의 프로그램")
+//        Text(text = "Address: ${address.region2DepthName} ${address.region3DepthName}")
+        if (contentList.isNotEmpty()) {
+            var page = 2
+            contentList.forEach {
+                kotlin.runCatching {
+                    Content(
+                        title = it.contents_title,
+                        place = it.center_name,
+                        date = it.apply_end_date,
+                        url = it.detail_link
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+                contentViewModel.getContent(page)
+                page += 1
+            }
         }
     }
 }
@@ -81,13 +102,14 @@ fun MainListTitle(title: String = "내 주변 프로그램") {
 
 @Preview
 @Composable
-fun Content(title: String = "<8월 금요시네마: 100% 울프: 푸들이 될 순 없어>", place: String, date: String) {
+fun Content(title: String = "<8월 금요시네마: 100% 울프: 푸들이 될 순 없어>", place: String, date: String, url: String) {
     val context = LocalContext.current
     Column(
         modifier = Modifier
             .clip(shape = RoundedCornerShape((38 / 1.7).dp))
             .clickable {
                 val intent = Intent(context, WebViewActivity::class.java)
+                intent.putExtra("url", url)
                 context.startActivity(intent)
                 Toast
                     .makeText(context, "Item selected", Toast.LENGTH_SHORT)
