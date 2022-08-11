@@ -71,7 +71,7 @@ fun ContentAppBar(
 
 @Preview
 @Composable
-fun CategoryContentListAppBar(titleText: String = "쿠킹") {
+fun CategoryContentListAppBar(titleText: String = "카테고리") {
     val activity = LocalContext.current as Activity
 
     Column {
