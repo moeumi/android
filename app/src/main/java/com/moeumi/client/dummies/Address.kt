@@ -15,7 +15,8 @@ val addressDummies = Address(
 
 const val getContentUrl =
     "https://mwwneja7pl.execute-api.ap-northeast-2.amazonaws.com/dev/contents"
-
+const val baseUrl =
+    "https://mwwneja7pl.execute-api.ap-northeast-2.amazonaws.com/dev"
 val contentDummies = ContentElement(
     center_name = "더미데이터",
     placement_name = "우동",

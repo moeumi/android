@@ -1,5 +1,6 @@
 package com.moeumi.client
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,13 +24,60 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import baseUrl
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.moeumi.client.data_type.ContentData
+import com.moeumi.client.data_type.ContentElement
 import com.skydoves.landscapist.glide.GlideImage
+import getContentUrl
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import readyTo
+import org.jsoup.Jsoup
+import com.google.gson.Gson
+import com.moeumi.client.data_type.ImageData
+import com.moeumi.client.data_type.ImageElement
 
 val CARD_PADDING = 33.dp
 val HORIZONTAL_PADDING = 16.dp
+
+
+@Composable
+fun GetBannerImage(page: Int?=0){
+    val _isEnd = MutableStateFlow(false)
+    val isEnd = _isEnd.asStateFlow()
+    val parameter = "/logo"
+    val url = "$baseUrl${parameter}"
+    val gson = Gson()
+    CoroutineScope(Dispatchers.IO).launch {
+        kotlin.runCatching {
+            if (!_isEnd.value) {
+                val doc = Jsoup.connect(url).get()
+                val body = doc.select("body").text()
+                val data : ImageData=
+                    gson.fromJson(body, Array<ImageElement>::class.java).toList()
+                Log.d("getBanner", data.toString())
+                result = data;
+                if (data.isEmpty()) {
+                    _isEnd.value = true
+                    result = data;
+                    Log.d("getBanner", "last")
+                }
+            }
+        }.onSuccess {
+//                Log.d("getContent", it.toString())
+            Log.d("getBanner", url)
+        }.onFailure {
+            _isEnd.value = true
+            Log.d("getBanner", "fail")
+        }
+    }
+
+}
 
 @OptIn(ExperimentalPagerApi::class)
 @Preview(name = "figma", widthDp = 412, heightDp = 892)
@@ -82,7 +130,7 @@ fun MainBanner() {
                     }
             ) {
                 Box {
-                    MainBannerImageView()
+                    GetBannerImage(page)
                     MainBannerText(modifier = Modifier.align(Alignment.BottomStart))
                     MainBannerText(
                         text = "부산도서관",
