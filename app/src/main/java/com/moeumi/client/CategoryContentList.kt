@@ -1,20 +1,22 @@
 package com.moeumi.client
 
 import android.annotation.SuppressLint
+import android.content.Intent.getIntent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -23,6 +25,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moeumi.client.ui.theme.MoeumiTheme
+import com.moeumi.client.view_model.GetContentCategoryViewModel
+import com.moeumi.client.view_model.GetContentViewModel
 
 class CategoryContentList : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +38,7 @@ class CategoryContentList : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    CategoryList()
+                    CategoryList(category = getIntent().getStringExtra("category"))
                 }
             }
         }
@@ -43,7 +47,7 @@ class CategoryContentList : ComponentActivity() {
 
 @Preview
 @Composable
-fun CategoryList() {
+fun CategoryList(contentViewModel: GetContentCategoryViewModel = GetContentCategoryViewModel(), category: String?="") {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -61,9 +65,50 @@ fun CategoryList() {
                     end = MainPadding / 2
                 )
         )
-        for (i in 0 until 10) {
-            Content(place = "푸른도시가꾸기사업소", date = "2022-08-31", url = "https://www.google.com")
-            Spacer(modifier = Modifier.height(16.dp))
+        if(category != "전체") {
+            contentViewModel.getContent(parameter = "/category/${category}")
+        }else{
+            contentViewModel.getContent()
+        }
+        val contentList by contentViewModel.content.collectAsState()
+        LazyColumn(
+            state = rememberLazyListState(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .animateContentSize()
+                .height(900.dp)
+                .padding(
+                    top = MainPadding,
+                    bottom = MainPadding,
+                    start = CARD_PADDING,
+                    end = CARD_PADDING
+                ),
+        ) {
+            item {
+                MainListTitle("${category}")
+            }
+
+            if (contentList.isNotEmpty()) {
+                itemsIndexed(contentList) { index, item ->
+                    var page = 2
+                    kotlin.runCatching {
+                        Content(
+                            title = item.contents_title,
+                            place = item.center_name,
+                            date = item.apply_end_date,
+                            url = item.detail_link
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                    if (index == contentList.lastIndex) {
+                        contentViewModel.getContent(
+                            page,
+                            parameter = "/category/${category}"
+                        )
+                        page += 1
+                    }
+                }
+            }
         }
     }
 }
