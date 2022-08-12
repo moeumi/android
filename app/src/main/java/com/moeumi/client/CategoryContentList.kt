@@ -61,8 +61,8 @@ fun CategoryList(contentViewModel: GetContentCategoryViewModel = GetContentCateg
                 .padding(
                     top = MainPadding / 2,
                     bottom = MainPadding / 2,
-                    start = MainPadding / 2,
-                    end = MainPadding / 2
+                    start = MainPadding / 4,
+                    end = MainPadding / 4
                 )
         )
         if(category != "전체") {
@@ -80,8 +80,8 @@ fun CategoryList(contentViewModel: GetContentCategoryViewModel = GetContentCateg
                 .padding(
                     top = MainPadding,
                     bottom = MainPadding,
-                    start = CARD_PADDING,
-                    end = CARD_PADDING
+                    start = MainPadding / 2,
+                    end = MainPadding / 2
                 ),
         ) {
             item {
