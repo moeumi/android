@@ -84,7 +84,7 @@ fun MainList(
                     page,
                     parameter = "/district/${district}"
                 )
-                if (district != "") {
+                if (district != "더미데이터") {
                     page += 1
                 }
             }
@@ -199,29 +199,3 @@ fun ContentDetailPlanView(place: String, date: String) {
         )
     }
 }
-
-//@SuppressLint("MissingPermission")
-//fun getCurrentDistrict(context: Context): String {
-//    var loc: Location? = null
-//    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-//    fusedLocationClient.lastLocation
-//        .addOnSuccessListener { location: Location? ->
-//            // Got last known location. In some rare situations this can be null.
-//            loc = location
-//            if (location != null) {
-//                Log.d(
-//                    "Location",
-//                    "Latitude: ${location.latitude} Longitude: ${location.longitude}"
-//                )
-//            }
-//        }
-//    var content: String = ""
-//    CoroutineScope(Dispatchers.IO).launch {
-//        content =
-//            Jsoup.connect("$getCurrentDistrictUrl?latitude=${loc!!.latitude}&longitude=${loc!!.longitude}")
-//                .get()
-//                .select("body")
-//                .text()
-//    }.onJoin
-//    return content
-//}

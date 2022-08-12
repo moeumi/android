@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.moeumi.client.data_type.ContentData
 import com.moeumi.client.data_type.ContentElement
-import contentDummies
-import getContentUrl
+import com.moeumi.client.dummies.contentDummies
+import com.moeumi.client.dummies.getContentUrl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

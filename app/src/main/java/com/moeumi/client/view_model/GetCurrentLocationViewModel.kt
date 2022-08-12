@@ -6,6 +6,7 @@ import android.location.Location
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.location.LocationServices
+import com.moeumi.client.dummies.getCurrentDistrictUrl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -42,8 +43,8 @@ class GetCurrentLocationViewModel : ViewModel() {
     @SuppressLint("MissingPermission")
     fun getCurrentDistrict(context: Context) {
         CoroutineScope(Dispatchers.IO).async {
-            var url: String =
-                "https://mwwneja7pl.execute-api.ap-northeast-2.amazonaws.com/dev/get_district?latitude=35.173095&longitude=129.130481"
+            val url: String =
+                "$getCurrentDistrictUrl?latitude=35.173095&longitude=129.130481"
             val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { loca: Location? ->
@@ -63,7 +64,7 @@ class GetCurrentLocationViewModel : ViewModel() {
             var url: String? = null
             if (lat != "0.0" && long != "0.0") {
                 url =
-                    "https://mwwneja7pl.execute-api.ap-northeast-2.amazonaws.com/dev/get_district?latitude=${lat}&longitude=${long}"
+                    "$getCurrentDistrictUrl?latitude=${lat}&longitude=${long}"
             }
             if (url != null) {
                 val doc =
