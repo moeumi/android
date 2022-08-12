@@ -2,6 +2,7 @@ package com.moeumi.client
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
@@ -19,9 +20,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.moeumi.client.dummies.readyTo
 import com.moeumi.client.ui.theme.MoeumiTheme
 import com.moeumi.client.view_model.GetContentCategoryViewModel
 
@@ -136,6 +139,7 @@ fun SelectCategoryContent() {
 @Preview
 @Composable
 fun CategoryContent(isSelected: Boolean, categoryText: String, onChange: () -> Unit) {
+    val context = LocalContext.current
     val backgroundColor: Color
     val textColor: Color
     if (isSelected) {
@@ -149,7 +153,8 @@ fun CategoryContent(isSelected: Boolean, categoryText: String, onChange: () -> U
     AnimatedContent(isSelected) {
         OutlinedButton(
             onClick = {
-                onChange()
+                Toast.makeText(context, readyTo, Toast.LENGTH_SHORT).show()
+//                onChange()
             },
             shape = RoundedCornerShape(11.dp),
             colors = ButtonDefaults.buttonColors(containerColor = backgroundColor),
