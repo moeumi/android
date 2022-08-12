@@ -1,20 +1,10 @@
-import com.moeumi.client.data_type.Address
 import com.moeumi.client.data_type.ContentElement
-
-val addressDummies = Address(
-    regionType = "B",
-    code = "2635010500",
-    addressName = "부산광역시 해운대구 우동",
-    region1DepthName = "부산광역시",
-    region2DepthName = "해운대구",
-    region3DepthName = "우동",
-    region4DepthName = "",
-    x = 129.14378876810525,
-    y = 35.172340282874565
-)
 
 const val getContentUrl =
     "https://mwwneja7pl.execute-api.ap-northeast-2.amazonaws.com/dev/contents"
+
+const val getCurrentDistrictUrl =
+    "https://mwwneja7pl.execute-api.ap-northeast-2.amazonaws.com/dev/get_district"
 
 val contentDummies = ContentElement(
     center_name = "더미데이터",
