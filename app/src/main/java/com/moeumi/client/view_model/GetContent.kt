@@ -22,15 +22,11 @@ class GetContentViewModel : ViewModel() {
     val isEnd = _isEnd.asStateFlow()
 
     private fun setContent(content: ContentData) {
-        CoroutineScope(Dispatchers.Main).launch {
-            _content.value = content
-        }
+        _content.value = content
     }
 
     private fun addContent(content: ContentData) {
-        CoroutineScope(Dispatchers.Main).launch {
-            _content.value = _content.value.plus(content)
-        }
+        _content.value = _content.value.plus(content)
     }
 
     fun getContent(page: Int = 1, parameter: String? = "") {
@@ -47,17 +43,15 @@ class GetContentViewModel : ViewModel() {
                         setContent(data)
                     } else if (page > 1) {
                         addContent(data)
-                    } else if (data.isEmpty()) {
-                        _isEnd.value = true
-                        Log.d("getContent", "last")
                     }
+                    Log.d("getContent", "${data[0]}")
                 }
             }.onSuccess {
-//                Log.d("getContent", it.toString())
-                Log.d("getContent", url)
+                Log.d("getContent", "Surcess $url")
+                Log.d("getContent", "Page $page")
             }.onFailure {
-                _isEnd.value = true
-//                Log.d("getContent", "last")
+//                _isEnd.value = true
+                Log.d("getContent", "last")
             }
         }
     }

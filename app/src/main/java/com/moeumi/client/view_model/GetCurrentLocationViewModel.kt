@@ -1,94 +1,81 @@
 package com.moeumi.client.view_model
 
-import addressDummies
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.location.LocationServices
-import com.google.gson.Gson
-import com.moeumi.client.data_type.Address
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import org.jsoup.Jsoup
 
 class GetCurrentLocationViewModel : ViewModel() {
-    private var _latitude = MutableStateFlow(0.0)
+    private var _latitude = MutableStateFlow<Double>(0.0)
     val latitude = _latitude.asStateFlow()
-    private var _longitude = MutableStateFlow(0.0)
+    private var _longitude = MutableStateFlow<Double>(0.0)
     val longitude = _longitude.asStateFlow()
 
-    private var _address = MutableStateFlow<Address>(addressDummies)
-
-    //    private var _address = MutableStateFlow("")
-    val address = _address.asStateFlow()
+    private var _district = MutableStateFlow<String>("")
+    val district = _district.asStateFlow()
 
     private fun setLatitude(latitude: Double) {
         CoroutineScope(Dispatchers.Main).launch {
             _latitude.value = latitude
-        }
+        }.onJoin
     }
 
     private fun setLongitude(longitude: Double) {
         CoroutineScope(Dispatchers.Main).launch {
             _longitude.value = longitude
-        }
+        }.onJoin
     }
 
-    private fun setAddress(address: Address) {
-        CoroutineScope(Dispatchers.Main).launch {
-            _address.value = address
-        }
+    private fun setDistrict(district: String) {
+        _district.value = district
     }
 
     @SuppressLint("MissingPermission")
-    fun getCurrentLocation(context: Context) {
-        CoroutineScope(Dispatchers.IO).launch {
+    fun getCurrentDistrict(context: Context) {
+        CoroutineScope(Dispatchers.IO).async {
+            var url: String =
+                "https://mwwneja7pl.execute-api.ap-northeast-2.amazonaws.com/dev/get_district?latitude=35.173095&longitude=129.130481"
             val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
             fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
+                .addOnSuccessListener { loca: Location? ->
                     // Got last known location. In some rare situations this can be null.
-                    if (location != null) {
-                        setLatitude(location.latitude)
-                        setLongitude(location.longitude)
+                    if (loca != null) {
+                        setLatitude(loca.latitude)
+                        setLongitude(loca.longitude)
+                        Log.d("location", "${loca.latitude}, ${loca.longitude}")
                     }
                 }
-        }
+            url
+        }.onAwait
     }
 
-    fun getCurrentAddress(context: Context) {
-        getCurrentLocation(context = context)
-        val lat = _latitude.value
-        val long = _longitude.value
-        val url = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=$long&y=$lat"
-        val gson = Gson()
-
-        if ((lat != 0.0 && long != 0.0)) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val client = OkHttpClient()
-                val request = Request.Builder()
-                    .url(url)
-                    .addHeader("Authorization", "KakaoAK ${"39b6c4f423c19eb1c773c4254ab40976"}")
-                    .build()
-
-                client.newCall(request).execute().also {
-                    when (it.isSuccessful) {
-                        true -> {
-                            val result = gson.fromJson(it.body!!.string(), Address::class.java)
-                            setAddress(result)
-                            Log.i("address_info", "url, $result")
-                        }
-                        else -> {
-                            Log.i("address_info", "failed ${it.message}, $long $lat")
-                        }
-                    }
-                }
+    fun getDistrict(lat: String, long: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            var url: String? = null
+            if (lat != "0.0" && long != "0.0") {
+                url =
+                    "https://mwwneja7pl.execute-api.ap-northeast-2.amazonaws.com/dev/get_district?latitude=${lat}&longitude=${long}"
             }
-        }
+            if (url != null) {
+                val doc =
+                    Jsoup.connect(url)
+                        .get()
+                val body = doc.select("body")
+                val data = body.text()
+                Log.d("data", data)
+                setDistrict(
+                    data
+                )
+            }
+        }.onJoin
     }
 }

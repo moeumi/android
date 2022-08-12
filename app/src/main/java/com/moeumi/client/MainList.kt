@@ -3,6 +3,7 @@ package com.moeumi.client
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color.parseColor
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,9 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moeumi.client.view_model.GetContentViewModel
 import com.moeumi.client.view_model.GetCurrentLocationViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 
 val MainPadding = 16.dp
 
@@ -44,21 +42,14 @@ fun MainList(
     contentViewModel: GetContentViewModel = GetContentViewModel()
 ) {
     val context = LocalContext.current
-    val getLocationScope = CoroutineScope(Dispatchers.Default).async {
-        currentLocationViewModel.getCurrentLocation(context)
-        currentLocationViewModel.getCurrentAddress(context)
-    }
-    val address by currentLocationViewModel.address.collectAsState()
-    getLocationScope.onAwait.also {
-        contentViewModel.getContent(parameter = "/district/${address.region2DepthName}")
-    }
-    val isEnd by contentViewModel.isEnd.collectAsState()
+    currentLocationViewModel.getCurrentDistrict(context)
+    val lat by currentLocationViewModel.latitude.collectAsState()
+    val longi by currentLocationViewModel.longitude.collectAsState()
+    Log.d("lat", lat.toString())
+    currentLocationViewModel.getDistrict(lat.toString(), longi.toString())
 
+    val district by currentLocationViewModel.district.collectAsState()
     val contentList by contentViewModel.content.collectAsState()
-
-//    LaunchedEffect(address) {
-//        contentViewModel.getContent(parameter = "/district/${address.region2DepthName}")
-//    }
 
     LazyColumn(
         state = rememberLazyListState(),
@@ -77,23 +68,23 @@ fun MainList(
             MainListTitle("내주변 프로그램")
         }
 
-        if (contentList.isNotEmpty() || contentList[0].center_name == "더미데이터") {
-            itemsIndexed(contentList) { index, item ->
-                var page = 2
-                kotlin.runCatching {
-                    Content(
-                        title = item.contents_title,
-                        place = item.center_name,
-                        date = item.apply_end_date,
-                        url = item.detail_link
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
-                if (index == contentList.lastIndex) {
-                    contentViewModel.getContent(
-                        page,
-                        parameter = "/district/${address.region2DepthName}"
-                    )
+        itemsIndexed(contentList) { index, item ->
+            var page = 1
+            kotlin.runCatching {
+                Content(
+                    title = item.contents_title,
+                    place = item.center_name,
+                    date = item.apply_end_date,
+                    url = item.detail_link
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            if (index == contentList.lastIndex) {
+                contentViewModel.getContent(
+                    page,
+                    parameter = "/district/${district}"
+                )
+                if (district != "") {
                     page += 1
                 }
             }
@@ -123,7 +114,7 @@ fun MainListTitle(title: String = "내 주변 프로그램") {
 @Preview
 @Composable
 fun Content(
-    title: String = "<8월 금요시네마: 100% 울프: 푸들이 될 순 없어>",
+    title: String,
     place: String,
     date: String,
     url: String
@@ -208,3 +199,29 @@ fun ContentDetailPlanView(place: String, date: String) {
         )
     }
 }
+
+//@SuppressLint("MissingPermission")
+//fun getCurrentDistrict(context: Context): String {
+//    var loc: Location? = null
+//    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+//    fusedLocationClient.lastLocation
+//        .addOnSuccessListener { location: Location? ->
+//            // Got last known location. In some rare situations this can be null.
+//            loc = location
+//            if (location != null) {
+//                Log.d(
+//                    "Location",
+//                    "Latitude: ${location.latitude} Longitude: ${location.longitude}"
+//                )
+//            }
+//        }
+//    var content: String = ""
+//    CoroutineScope(Dispatchers.IO).launch {
+//        content =
+//            Jsoup.connect("$getCurrentDistrictUrl?latitude=${loc!!.latitude}&longitude=${loc!!.longitude}")
+//                .get()
+//                .select("body")
+//                .text()
+//    }.onJoin
+//    return content
+//}

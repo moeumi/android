@@ -54,9 +54,4 @@ data class ContentElement(
 
     @SerialName("apply_state")
     val apply_state: String
-) {
-    fun length(): Int {
-        return contents_title.length
-    }
-}
-
+)
