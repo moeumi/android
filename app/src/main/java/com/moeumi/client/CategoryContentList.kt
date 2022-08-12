@@ -38,7 +38,7 @@ class CategoryContentList : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    CategoryList(category = getIntent().getStringExtra("category"))
+                    CategoryList(category = intent.getStringExtra("category"))
                 }
             }
         }
