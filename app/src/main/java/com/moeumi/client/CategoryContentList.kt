@@ -1,9 +1,7 @@
 package com.moeumi.client
 
 import android.annotation.SuppressLint
-import android.content.Intent.getIntent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
@@ -26,7 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moeumi.client.ui.theme.MoeumiTheme
 import com.moeumi.client.view_model.GetContentCategoryViewModel
-import com.moeumi.client.view_model.GetContentViewModel
 
 class CategoryContentList : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +44,10 @@ class CategoryContentList : ComponentActivity() {
 
 @Preview
 @Composable
-fun CategoryList(contentViewModel: GetContentCategoryViewModel = GetContentCategoryViewModel(), category: String?="") {
+fun CategoryList(
+    contentViewModel: GetContentCategoryViewModel = GetContentCategoryViewModel(),
+    category: String? = ""
+) {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -65,9 +65,9 @@ fun CategoryList(contentViewModel: GetContentCategoryViewModel = GetContentCateg
                     end = MainPadding / 4
                 )
         )
-        if(category != "전체") {
+        if (category != "전체") {
             contentViewModel.getContent(parameter = "/category/${category}")
-        }else{
+        } else {
             contentViewModel.getContent()
         }
         val contentList by contentViewModel.content.collectAsState()
@@ -117,8 +117,8 @@ fun CategoryList(contentViewModel: GetContentCategoryViewModel = GetContentCateg
 @Composable
 fun SelectCategoryContent() {
 //    val selected = arrayListOf(true, false)
-    var specificLocateSelected by rememberSaveable { mutableStateOf(true) }
-    var allLocateSelected by rememberSaveable { mutableStateOf(false) }
+    var specificLocateSelected by rememberSaveable { mutableStateOf(false) }
+    var allLocateSelected by rememberSaveable { mutableStateOf(true) }
     Row {
         CategoryContent(isSelected = specificLocateSelected, categoryText = "해운대구") {
             specificLocateSelected = !specificLocateSelected
