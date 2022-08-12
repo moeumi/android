@@ -88,7 +88,7 @@ fun CategoryList(
                 ),
         ) {
             item {
-                MainListTitle("${category}")
+                MainListTitle("$category")
             }
 
             if (contentList.isNotEmpty()) {
