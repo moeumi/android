@@ -13,10 +13,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -29,6 +31,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.moeumi.client.view_model.GetContentViewModel
 import com.moeumi.client.view_model.GetCurrentLocationViewModel
 
@@ -166,36 +171,56 @@ fun ContentDetailPlanView(place: String, date: String) {
     } else {
         Color(parseColor("#525252"))
     }
-    Row(
-        modifier = Modifier
-            .width(250.dp)
-            .clip(shape = RoundedCornerShape((11).dp))
-            .background(color = Color(parseColor("#FF7979"))),
-    ) {
-        Text(
-            text = place,
-            fontWeight = Medium,
-            fontFamily = notoSanse,
-            color = textColor,
-            textAlign = TextAlign.Start,
-            fontSize = 14.sp,
-            overflow = TextOverflow.Ellipsis,
+    Row(horizontalArrangement = Arrangement.SpaceAround) {
+        Row(
             modifier = Modifier
-                .padding(start = 8.dp)
-                .width(135.dp),
-            maxLines = 1
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            text = date,
-            fontWeight = Medium,
-            fontFamily = notoSanse,
-            color = textColor,
-            textAlign = TextAlign.Start,
-            fontSize = 14.sp,
-            modifier = Modifier
+                .width(250.dp)
                 .clip(shape = RoundedCornerShape((11).dp))
                 .background(color = Color(parseColor("#FF7979"))),
-        )
+        ) {
+            Text(
+                text = place,
+                fontWeight = Medium,
+                fontFamily = notoSanse,
+                color = textColor,
+                textAlign = TextAlign.Start,
+                fontSize = 14.sp,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .width(135.dp),
+                maxLines = 1
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = date,
+                fontWeight = Medium,
+                fontFamily = notoSanse,
+                color = textColor,
+                textAlign = TextAlign.Start,
+                fontSize = 14.sp,
+                modifier = Modifier
+                    .clip(shape = RoundedCornerShape((11).dp))
+                    .background(color = Color(parseColor("#FF7979"))),
+            )
+        }
+        IconButton(
+            onClick = {
+
+            },
+            modifier = Modifier
+                .align(Alignment.Bottom)
+                .padding(start = 38.dp)
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(R.drawable.ic_iconmonstr_favorite_no)
+                    .decoderFactory(SvgDecoder.Factory())
+                    .build(),
+                contentDescription = null,
+                modifier = Modifier.size(24.dp)
+            )
+        }
     }
 }
+
