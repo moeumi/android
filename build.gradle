@@ -2,6 +2,7 @@ buildscript {
     ext {
         compose_version = '1.2.0'
         google_accompanist_version = "0.26.0-alpha"
+        room_version = "2.4.3"
     }
     repositories {
         google()  // Google's Maven repository
