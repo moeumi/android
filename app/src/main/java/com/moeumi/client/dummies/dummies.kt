@@ -1,6 +1,6 @@
 package com.moeumi.client.dummies
 
-import com.moeumi.client.data_type.ContentElement
+import com.moeumi.client.data.data_type.ContentElement
 
 const val apiUrl = "https://mwwneja7pl.execute-api.ap-northeast-2.amazonaws.com/dev/"
 const val getContentUrl = "${apiUrl}contents"

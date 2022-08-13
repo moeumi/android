@@ -1,4 +1,4 @@
-package com.moeumi.client.data_type
+package com.moeumi.client.data.data_type
 
 
 import kotlinx.serialization.SerialName

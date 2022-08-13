@@ -3,8 +3,8 @@ package com.moeumi.client.view_model
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
-import com.moeumi.client.data_type.ContentData
-import com.moeumi.client.data_type.ContentElement
+import com.moeumi.client.data.data_type.ContentData
+import com.moeumi.client.data.data_type.ContentElement
 import com.moeumi.client.dummies.contentDummies
 import com.moeumi.client.dummies.getContentUrl
 import kotlinx.coroutines.CoroutineScope
