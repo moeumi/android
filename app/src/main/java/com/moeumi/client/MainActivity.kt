@@ -33,11 +33,3 @@ class MainActivity : ComponentActivity() {
 fun MainView() {
     MainScreen()
 }
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MoeumiTheme {
-        MainView()
-    }
-}
