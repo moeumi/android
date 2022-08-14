@@ -56,7 +56,9 @@ fun CategoryList(
             .verticalScroll(rememberScrollState())
             .padding(horizontal = MainPadding * 2)
     ) {
-        CategoryContentListAppBar()
+        if (category != null) {
+            CategoryContentListAppBar(category)
+        }
         SelectCategoryContent()
         Divider(
             modifier = Modifier
@@ -87,10 +89,6 @@ fun CategoryList(
                     end = MainPadding / 2
                 ),
         ) {
-            item {
-                MainListTitle("$category")
-            }
-
             if (contentList.isNotEmpty()) {
                 itemsIndexed(contentList) { index, item ->
                     var page = 2
@@ -99,7 +97,8 @@ fun CategoryList(
                             title = item.contents_title,
                             place = item.center_name,
                             date = item.apply_end_date,
-                            url = item.detail_link
+                            url = item.detail_link,
+                            contentId = item.contents_id.toInt()
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                     }
