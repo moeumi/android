@@ -1,9 +1,12 @@
 package com.moeumi.client
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -14,7 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -24,11 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
-import com.skydoves.landscapist.glide.GlideImage
 import com.moeumi.client.dummies.readyTo
+import com.skydoves.landscapist.glide.GlideImage
 
 val CARD_PADDING = 33.dp
-val HORIZONTAL_PADDING = 16.dp
+val VERTICAL_PADDING = 16.dp
 
 @OptIn(ExperimentalPagerApi::class)
 @Preview(name = "figma", widthDp = 412, heightDp = 892)
@@ -38,7 +43,7 @@ fun MainBanner() {
     HorizontalPager(
         count = 3,
         modifier = Modifier
-            .padding(top = HORIZONTAL_PADDING, bottom = HORIZONTAL_PADDING)
+            .padding(top = VERTICAL_PADDING, bottom = VERTICAL_PADDING)
             .fillMaxWidth()
             .height(180.dp)
     ) { page ->
@@ -46,7 +51,7 @@ fun MainBanner() {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = CARD_PADDING, end = CARD_PADDING)
+//                    .padding(start = CARD_PADDING, end = CARD_PADDING)
 //                    .graphicsLayer {
 //                        // Calculate the absolute offset for the current page from the
 //                        // scroll position. We use the absolute value which allows us to mirror
@@ -114,6 +119,34 @@ fun MainBanner() {
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun MainSubBanner() {
+    val subBanner = listOf(
+        painterResource(id = R.drawable.subbanner_group73),
+        painterResource(id = R.drawable.subbanner_group74),
+        painterResource(id = R.drawable.subbanner_group75),
+        painterResource(id = R.drawable.subbanner_group76),
+        painterResource(id = R.drawable.subbanner_group78),
+        painterResource(id = R.drawable.subbanner_group79),
+    )
+    Column(
+        modifier = Modifier.padding(start = CARD_PADDING, end = CARD_PADDING)
+    ) {
+        MainListTitle("이달의 행사")
+        LazyRow(modifier = Modifier.height(280.dp)) {
+            itemsIndexed(subBanner) { _, image ->
+                Image(
+                    painter = image,
+                    contentDescription = "",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
             }
         }
     }
