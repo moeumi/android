@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -45,82 +44,29 @@ fun MainBanner() {
         modifier = Modifier
             .padding(top = VERTICAL_PADDING, bottom = VERTICAL_PADDING)
             .fillMaxWidth()
-            .height(180.dp)
+            .height(230.dp)
     ) { page ->
-        for (i in 0 until 3) {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-//                    .padding(start = CARD_PADDING, end = CARD_PADDING)
-//                    .graphicsLayer {
-//                        // Calculate the absolute offset for the current page from the
-//                        // scroll position. We use the absolute value which allows us to mirror
-//                        // any effects for both directions
-//                        val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
-//
-//                        // We animate the scaleX + scaleY, between 85% and 100%
-//                        lerp(
-//                            start = ScaleFactor(0.85f, 0.85f),
-//                            stop = ScaleFactor(1f, 1f),
-//                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-//                        ).also { scale ->
-//                            scaleX = scale.scaleX
-//                            scaleY = scale.scaleX
-//                        }
-//
-//                        // We animate the alpha, between 50% and 100%
-////                        alpha = lerp(
-////                            start = 0.5f,
-////                            stop = 1f,
-////                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-////                        )
-//                    }
-                    .clickable {
-                        Toast
-                            .makeText(
-                                context,
-                                readyTo,
-                                Toast.LENGTH_LONG
-                            )
-                            .show()
-                    }
-            ) {
-                Box {
-                    MainBannerImageView()
-                    MainBannerText(modifier = Modifier.align(Alignment.BottomStart))
-                    MainBannerText(
-                        text = "부산도서관",
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.End,
-                        modifier = Modifier.align(Alignment.TopEnd)
-                    )
-                    Row(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(bottom = 8.dp)
-                    ) {
-                        for (j in 0 until 3) {
-                            if (j == page) {
-                                MainBannerToggleButton(
-                                    color = Color.Red,
-                                    shape = CircleShape
-                                )
-                            } else {
-                                MainBannerToggleButton(
-                                    color = Color.White,
-                                    shape = CircleShape
-                                )
-                            }
-                            Spacer(
-                                modifier = Modifier.padding(
-                                    horizontal = 4.dp
-                                )
-                            )
-                        }
-                    }
-                }
-            }
-        }
+        val mainImage = listOf(
+            painterResource(id = R.drawable.main_banner67),
+            painterResource(id = R.drawable.main_banner68),
+            painterResource(id = R.drawable.main_banner69),
+        )
+        Image(
+            painter = mainImage[page],
+            contentDescription = "banner",
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    Toast
+                        .makeText(
+                            context,
+                            readyTo,
+                            Toast.LENGTH_LONG
+                        )
+                        .show()
+                },
+            contentScale = ContentScale.Crop
+        )
     }
 }
 
