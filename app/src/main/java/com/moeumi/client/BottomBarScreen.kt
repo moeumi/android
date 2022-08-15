@@ -1,25 +1,25 @@
 package com.moeumi.client
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.ui.graphics.vector.ImageVector
-
 sealed class BottomBarScreen(
     val route: String,
     val title: String,
-    val icon: ImageVector
+    val icon: Int
 ) {
     object Home : BottomBarScreen(
         route = "Home",
         title = "Home",
-        icon = Icons.Default.Home
+        icon = R.drawable.ic_home
     )
 
-    object Favrorit : BottomBarScreen(
+    object Favorite : BottomBarScreen(
         route = "Favorite",
         title = "Favorite",
-        icon = Icons.Default.Favorite
+        icon = R.drawable.ic_favorite
+    )
+
+    object Organize : BottomBarScreen(
+        route = "Organize",
+        title = "Organize",
+        icon = R.drawable.ic_organize
     )
 }
-

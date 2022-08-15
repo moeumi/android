@@ -1,10 +1,13 @@
 package com.moeumi.client
 
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -38,8 +41,22 @@ fun BottomNavGraph(navController: NavHostController) {
                 }
             }
         }
-        composable(route = BottomBarScreen.Favrorit.route) {
+        composable(route = BottomBarScreen.Favorite.route) {
             Favorite()
+        }
+        composable(route = BottomBarScreen.Organize.route) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.contruct),
+                    contentDescription = "준비중입니다.",
+                    modifier = Modifier
+                        .size(256.dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+            }
         }
     }
 }
