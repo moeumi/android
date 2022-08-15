@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,13 +18,8 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.moeumi.client.dummies.readyTo
@@ -35,7 +29,7 @@ val CARD_PADDING = 33.dp
 val VERTICAL_PADDING = 16.dp
 
 @OptIn(ExperimentalPagerApi::class)
-@Preview(name = "figma", widthDp = 412, heightDp = 892)
+@Preview(name = "figma")
 @Composable
 fun MainBanner() {
     val context = LocalContext.current
@@ -91,7 +85,7 @@ fun MainSubBanner() {
         }
         LazyRow(
             modifier = Modifier
-                .height(280.dp)
+                .height(313.6.dp)
                 .padding(start = (CARD_PADDING.value - 15).dp, end = (CARD_PADDING.value - 15).dp)
         ) {
             itemsIndexed(subBanner) { _, image ->
@@ -128,41 +122,41 @@ fun MainBannerImageView(image_url: String = "https://images.unsplash.com/photo-1
     )
 }
 
-@Composable
-fun MainBannerText(
-    text: String = "인문학으로 만나는 유럽의 예술",
-    fontSize: TextUnit = 28.sp,
-    color: Color = Color.White,
-    textAlign: TextAlign = TextAlign.Start,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        text = text,
-        fontSize = fontSize,
-        color = color,
-        fontWeight = FontWeight.ExtraBold,
-        overflow = TextOverflow.Ellipsis,
-        fontFamily = notoSanse,
-        lineHeight = 38.sp,
-        textAlign = textAlign,
-        modifier = modifier
-            .width(256.dp)
-            .padding(16.dp),
-    )
-}
+//@Composable
+//fun MainBannerText(
+//    text: String = "인문학으로 만나는 유럽의 예술",
+//    fontSize: TextUnit = 28.sp,
+//    color: Color = Color.White,
+//    textAlign: TextAlign = TextAlign.Start,
+//    modifier: Modifier = Modifier
+//) {
+//    Text(
+//        text = text,
+//        fontSize = fontSize,
+//        color = color,
+//        fontWeight = FontWeight.ExtraBold,
+//        overflow = TextOverflow.Ellipsis,
+//        fontFamily = notoSanse,
+//        lineHeight = 38.sp,
+//        textAlign = textAlign,
+//        modifier = modifier
+//            .width(256.dp)
+//            .padding(16.dp),
+//    )
+//}
 
-@Preview
-@Composable
-fun MainBannerNameText() {
-    Box {
-        MainBannerText(
-            text = "부산도서관",
-            fontSize = 16.sp,
-            textAlign = TextAlign.End,
-            modifier = Modifier.align(Alignment.TopEnd)
-        )
-    }
-}
+//@Preview
+//@Composable
+//fun MainBannerNameText() {
+//    Box {
+//        MainBannerText(
+//            text = "부산도서관",
+//            fontSize = 16.sp,
+//            textAlign = TextAlign.End,
+//            modifier = Modifier.align(Alignment.TopEnd)
+//        )
+//    }
+//}
 
 @Preview
 @Composable
