@@ -3,11 +3,10 @@
 package com.moeumi.client
 
 import android.app.Activity
-import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -23,23 +22,28 @@ fun MainAppBar(address: String = readyTo) {
     val context = LocalContext.current
     CenterAlignedTopAppBar(
         title = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = address,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = notoSanse,
-                    modifier = Modifier,
-                )
-                IconButton(
-                    onClick = { Toast.makeText(context, readyTo, Toast.LENGTH_SHORT).show() },
-                    modifier = Modifier,
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_baseline_oui_keyboard_arrow_down_24),
-                        contentDescription = "주소변경"
-                    )
-                }
-            }
+            Image(
+                painter = painterResource(R.drawable.contruct),
+                contentDescription = "",
+                modifier = Modifier.size(192.dp)
+            )
+//            Row(verticalAlignment = Alignment.CenterVertically) {
+//                Text(
+//                    text = address,
+//                    fontWeight = FontWeight.Bold,
+//                    fontFamily = notoSanse,
+//                    modifier = Modifier,
+//                )
+//                IconButton(
+//                    onClick = { Toast.makeText(context, readyTo, Toast.LENGTH_SHORT).show() },
+//                    modifier = Modifier,
+//                ) {
+//                    Icon(
+//                        painter = painterResource(id = R.drawable.ic_baseline_oui_keyboard_arrow_down_24),
+//                        contentDescription = "주소변경"
+//                    )
+//                }
+//            }
         }
     )
 }
