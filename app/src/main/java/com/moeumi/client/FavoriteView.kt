@@ -1,10 +1,7 @@
 package com.moeumi.client
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Divider
@@ -15,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.room.Room
 import com.moeumi.client.view_model.ContentReviewViewModel
 
@@ -58,6 +56,10 @@ fun Favorite(contentReviewViewModel: ContentReviewViewModel = ContentReviewViewM
                     url = item.url,
                     contentId = item.contentId
                 )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            item {
+                Spacer(modifier = Modifier.height(64.dp))
             }
         }
     }

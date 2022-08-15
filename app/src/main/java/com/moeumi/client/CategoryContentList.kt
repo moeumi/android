@@ -134,7 +134,6 @@ fun SelectCategoryContent() {
 }
 
 @OptIn(ExperimentalAnimationApi::class)
-@SuppressLint("UnusedCrossfadeTargetStateParameter", "UseCheckPermission")
 @Preview
 @Composable
 fun CategoryContent(isSelected: Boolean, categoryText: String, onChange: () -> Unit) {

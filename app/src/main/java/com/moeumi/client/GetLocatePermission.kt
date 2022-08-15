@@ -79,6 +79,7 @@ fun GetLocationPermission(
                     textAlign = TextAlign.Center,
                 )
             }
+            Spacer(modifier = Modifier.height(64.dp))
         }
     }
 }
