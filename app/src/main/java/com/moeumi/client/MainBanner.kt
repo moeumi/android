@@ -73,6 +73,7 @@ fun MainBanner() {
 @Preview
 @Composable
 fun MainSubBanner() {
+    val context = LocalContext.current
     val subBanner = listOf(
         painterResource(id = R.drawable.subbanner_group73),
         painterResource(id = R.drawable.subbanner_group74),
@@ -82,15 +83,32 @@ fun MainSubBanner() {
         painterResource(id = R.drawable.subbanner_group79),
     )
     Column(
-        modifier = Modifier.padding(start = CARD_PADDING, end = CARD_PADDING)
     ) {
-        MainListTitle("이달의 행사")
-        LazyRow(modifier = Modifier.height(280.dp)) {
+        Box(
+            modifier = Modifier.padding(start = CARD_PADDING, end = CARD_PADDING)
+        ) {
+            MainListTitle("이달의 행사")
+        }
+        LazyRow(
+            modifier = Modifier
+                .height(280.dp)
+                .padding(start = (CARD_PADDING.value - 15).dp, end = (CARD_PADDING.value - 15).dp)
+        ) {
             itemsIndexed(subBanner) { _, image ->
                 Image(
                     painter = image,
                     contentDescription = "",
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable {
+                            Toast
+                                .makeText(
+                                    context,
+                                    readyTo,
+                                    Toast.LENGTH_LONG
+                                )
+                                .show()
+                        },
                     contentScale = ContentScale.Crop
                 )
             }
