@@ -14,6 +14,10 @@ class ContentReviewViewModel : ViewModel() {
     private val _contentReview = MutableStateFlow(
         listOf(
             ContentReview(
+                title = "",
+                place = "",
+                date = "",
+                url = "",
                 contentId = 0,
                 isFav = false,
                 starRank = 0,
@@ -25,6 +29,10 @@ class ContentReviewViewModel : ViewModel() {
 
     private val _isFavorite = MutableStateFlow(false)
     val isFavorite = _isFavorite.asStateFlow()
+
+    fun changeIsFavorite() {
+        _isFavorite.value = !isFavorite.value
+    }
 
     fun getAll(db: AppDatabase) {
         CoroutineScope(Dispatchers.IO).async {

@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -37,6 +38,7 @@ import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.moeumi.client.data.data_type.ContentReview
+import com.moeumi.client.ui.theme.MoeumiTheme
 import com.moeumi.client.view_model.ContentReviewViewModel
 import com.moeumi.client.view_model.GetContentViewModel
 import com.moeumi.client.view_model.GetCurrentLocationViewModel
@@ -123,7 +125,6 @@ fun MainListTitle(title: String = "내 주변 프로그램", fontSize: TextUnit 
     )
 }
 
-@Preview
 @Composable
 fun Content(
     title: String,
@@ -133,49 +134,66 @@ fun Content(
     contentId: Int
 ) {
     val context = LocalContext.current
-    Column(
+    Surface(
         modifier = Modifier
-            .clip(shape = RoundedCornerShape(15.dp))
-            .clickable {
-                val intent = Intent(context, WebViewActivity::class.java)
-                intent.putExtra("url", url)
-                context.startActivity(intent)
-            }
-            .background(Color(parseColor("#ebebeb")))
             .fillMaxWidth()
-            .height(115.dp)
-            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+            .height(115.dp),
+        shape = RoundedCornerShape(24.dp),
+        color = Color(parseColor("#ebebeb")),
+        shadowElevation = 4.dp,
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .clip(shape = RoundedCornerShape(24.dp))
+                .clickable {
+                    val intent = Intent(context, WebViewActivity::class.java)
+                    intent.putExtra("url", url)
+                    context.startActivity(intent)
+                }
+                .background(Color(parseColor("#ebebeb")))
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .height(115.dp)
+                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
         ) {
-            Row {
-                Spacer(
-                    modifier = Modifier.padding(start = 8.dp)
-                )
-                Text(
-                    title,
-                    color = Color.Black,
-                    fontSize = 18.sp,
-                    fontWeight = Bold,
-                    modifier = Modifier,
-                    fontFamily = notoSanse,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Row {
+                    Spacer(
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+                    Text(
+                        title,
+                        color = Color.Black,
+                        fontSize = 18.sp,
+                        fontWeight = Bold,
+                        modifier = Modifier,
+                        fontFamily = notoSanse,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                    )
+                }
+                Spacer(modifier = Modifier.height(2.dp))
+                ContentDetailPlanView(
+                    title = title,
+                    place = place,
+                    date = date,
+                    url = url,
+                    contentId = contentId
                 )
             }
-            Spacer(modifier = Modifier.height(2.dp))
-            ContentDetailPlanView(place = place, date = date, contentId = contentId)
         }
     }
 }
 
-@Preview
 @Composable
 fun ContentDetailPlanView(
+    title: String,
     place: String,
     date: String,
+    url: String,
     contentId: Int,
     contentReviewViewModel: ContentReviewViewModel = ContentReviewViewModel()
 ) {
@@ -238,8 +256,18 @@ fun ContentDetailPlanView(
             onClick = {
                 contentReviewViewModel.insert(
                     db,
-                    ContentReview(contentId = contentId, isFav = true, starRank = 0, review = "")
+                    ContentReview(
+                        title = title,
+                        place = place,
+                        date = date,
+                        url = url,
+                        contentId = contentId,
+                        isFav = !isFavorite,
+                        starRank = 0,
+                        review = ""
+                    )
                 )
+                contentReviewViewModel.changeIsFavorite()
                 Log.d("insert", "insert")
             },
             modifier = Modifier
@@ -255,5 +283,33 @@ fun ContentDetailPlanView(
                 modifier = Modifier.size(24.dp)
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun ContentPreview() {
+    MoeumiTheme() {
+        Content(
+            title = "제목",
+            place = "장소",
+            date = "날짜",
+            url = "https://www.google.com",
+            contentId = 1
+        )
+    }
+}
+
+@Preview
+@Composable
+fun ContentDetailPlanViewPreview() {
+    MoeumiTheme() {
+        ContentDetailPlanView(
+            title = "제목",
+            place = "장소",
+            date = "날짜",
+            url = "https://www.google.com",
+            contentId = 1
+        )
     }
 }
