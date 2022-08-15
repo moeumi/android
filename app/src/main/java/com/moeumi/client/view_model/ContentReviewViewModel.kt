@@ -23,11 +23,8 @@ class ContentReviewViewModel : ViewModel() {
     )
     val contentReview = _contentReview.asStateFlow()
 
-//    fun setDb(db: AppDatabase, context: Context) {
-//        CoroutineScope(Dispatchers.Main).launch {
-//            db
-//        }
-//    }
+    private val _isFavorite = MutableStateFlow(false)
+    val isFavorite = _isFavorite.asStateFlow()
 
     fun getAll(db: AppDatabase) {
         CoroutineScope(Dispatchers.IO).async {
@@ -41,6 +38,18 @@ class ContentReviewViewModel : ViewModel() {
         CoroutineScope(Dispatchers.IO).async {
             val reviewDao = db.contentReviewDao()
             reviewDao.insert(contentReview)
+        }.onAwait
+    }
+
+    fun _isFavoriteQuery(db: AppDatabase, contentId: Int) {
+        val reviewDao = db.contentReviewDao()
+        CoroutineScope(Dispatchers.IO).async {
+            val review = reviewDao.loadAllByIds(intArrayOf(contentId))
+            if (review.isNotEmpty()) {
+                _isFavorite.value = review[0].isFav
+            } else {
+                _isFavorite.value = false
+            }
         }.onAwait
     }
 }

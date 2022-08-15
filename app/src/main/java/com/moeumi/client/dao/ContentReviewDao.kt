@@ -12,7 +12,7 @@ interface ContentReviewDao {
     fun getAll(): List<ContentReview>
 
     @Query("SELECT * FROM ContentReview WHERE contentId IN (:contentId)")
-    fun loadAllByIds(contentId: BooleanArray): List<ContentReview>
+    fun loadAllByIds(contentId: IntArray): List<ContentReview>
 
     @Insert
     fun insertAll(vararg users: ContentReview)

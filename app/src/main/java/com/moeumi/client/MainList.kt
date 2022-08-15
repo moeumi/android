@@ -29,11 +29,15 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Medium
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.room.Room
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
+import com.moeumi.client.data.data_type.ContentReview
+import com.moeumi.client.view_model.ContentReviewViewModel
 import com.moeumi.client.view_model.GetContentViewModel
 import com.moeumi.client.view_model.GetCurrentLocationViewModel
 
@@ -55,6 +59,7 @@ fun MainList(
 
     val district by currentLocationViewModel.district.collectAsState()
     val contentList by contentViewModel.content.collectAsState()
+//    val contentList = remember { contentListState }
 
     LazyColumn(
         state = rememberLazyListState(),
@@ -69,6 +74,7 @@ fun MainList(
                 end = CARD_PADDING
             ),
     ) {
+
         item {
             MainListTitle("내주변 프로그램")
         }
@@ -80,7 +86,8 @@ fun MainList(
                     title = item.contents_title,
                     place = item.center_name,
                     date = item.apply_end_date,
-                    url = item.detail_link
+                    url = item.detail_link,
+                    contentId = item.contents_id.toInt(),
                 )
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -99,11 +106,11 @@ fun MainList(
 
 @Preview
 @Composable
-fun MainListTitle(title: String = "내 주변 프로그램") {
+fun MainListTitle(title: String = "내 주변 프로그램", fontSize: TextUnit = 28.sp) {
     val textColor = if (isSystemInDarkTheme()) Color.White else Color.Black
     Text(
         text = title,
-        fontSize = 28.sp,
+        fontSize = fontSize,
         color = textColor,
         fontWeight = FontWeight.ExtraBold,
         overflow = TextOverflow.Ellipsis,
@@ -122,7 +129,8 @@ fun Content(
     title: String,
     place: String,
     date: String,
-    url: String
+    url: String,
+    contentId: Int
 ) {
     val context = LocalContext.current
     Column(
@@ -135,7 +143,7 @@ fun Content(
             }
             .background(Color(parseColor("#ebebeb")))
             .fillMaxWidth()
-            .height((115).dp)
+            .height(115.dp)
             .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
     ) {
         Column(
@@ -158,19 +166,41 @@ fun Content(
                 )
             }
             Spacer(modifier = Modifier.height(2.dp))
-            ContentDetailPlanView(place = place, date = date)
+            ContentDetailPlanView(place = place, date = date, contentId = contentId)
         }
     }
 }
 
 @Preview
 @Composable
-fun ContentDetailPlanView(place: String, date: String) {
+fun ContentDetailPlanView(
+    place: String,
+    date: String,
+    contentId: Int,
+    contentReviewViewModel: ContentReviewViewModel = ContentReviewViewModel()
+) {
+    val context = LocalContext.current
     val textColor = if (isSystemInDarkTheme()) {
         Color.Black
     } else {
         Color(parseColor("#525252"))
     }
+    val db = Room.databaseBuilder(
+        context,
+        AppDatabase::class.java,
+        contentReviewDbName,
+    ).build()
+
+    contentReviewViewModel.getAll(db)
+    contentReviewViewModel._isFavoriteQuery(db, contentId)
+    val isFavorite by contentReviewViewModel.isFavorite.collectAsState()
+
+    val heartImage = if (!isFavorite) {
+        R.drawable.ic_iconmonstr_favorite_no
+    } else {
+        R.drawable.ic_iconmonstr_favorite_fill
+    }
+
     Row(horizontalArrangement = Arrangement.SpaceAround) {
         Row(
             modifier = Modifier
@@ -206,7 +236,11 @@ fun ContentDetailPlanView(place: String, date: String) {
         }
         IconButton(
             onClick = {
-
+                contentReviewViewModel.insert(
+                    db,
+                    ContentReview(contentId = contentId, isFav = true, starRank = 0, review = "")
+                )
+                Log.d("insert", "insert")
             },
             modifier = Modifier
                 .align(Alignment.Bottom)
@@ -214,7 +248,7 @@ fun ContentDetailPlanView(place: String, date: String) {
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(R.drawable.ic_iconmonstr_favorite_no)
+                    .data(heartImage)
                     .decoderFactory(SvgDecoder.Factory())
                     .build(),
                 contentDescription = null,
@@ -223,4 +257,3 @@ fun ContentDetailPlanView(place: String, date: String) {
         }
     }
 }
-
