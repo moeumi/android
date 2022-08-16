@@ -219,12 +219,13 @@ fun ContentDetailPlanView(
         R.drawable.ic_iconmonstr_favorite_fill
     }
 
-    Row(horizontalArrangement = Arrangement.SpaceAround) {
+    Row() {
         Row(
             modifier = Modifier
                 .width(250.dp)
                 .clip(shape = RoundedCornerShape((11).dp))
-                .background(color = Color(parseColor("#FF7979"))),
+                .background(color = Color(parseColor("#FF7979")))
+                .weight(8f),
         ) {
             Text(
                 text = place,
@@ -236,7 +237,7 @@ fun ContentDetailPlanView(
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .padding(start = 8.dp)
-                    .width(135.dp),
+                    .weight(1f),
                 maxLines = 1
             )
             Spacer(modifier = Modifier.width(16.dp))
@@ -245,11 +246,12 @@ fun ContentDetailPlanView(
                 fontWeight = Medium,
                 fontFamily = notoSanse,
                 color = textColor,
-                textAlign = TextAlign.Start,
+                textAlign = TextAlign.End,
                 fontSize = 14.sp,
                 modifier = Modifier
                     .clip(shape = RoundedCornerShape((11).dp))
-                    .background(color = Color(parseColor("#FF7979"))),
+                    .background(color = Color(parseColor("#FF7979")))
+                    .weight(1f),
             )
         }
         IconButton(
@@ -273,6 +275,7 @@ fun ContentDetailPlanView(
             modifier = Modifier
                 .align(Alignment.Bottom)
                 .padding(start = 38.dp)
+                .weight(2f)
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
@@ -280,7 +283,8 @@ fun ContentDetailPlanView(
                     .decoderFactory(SvgDecoder.Factory())
                     .build(),
                 contentDescription = null,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier
+//                    .size(24.dp)
             )
         }
     }
