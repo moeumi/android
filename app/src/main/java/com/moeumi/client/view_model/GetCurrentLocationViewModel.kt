@@ -7,12 +7,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.location.LocationServices
 import com.moeumi.client.dummies.getCurrentDistrictUrl
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 
 class GetCurrentLocationViewModel : ViewModel() {
@@ -67,15 +64,18 @@ class GetCurrentLocationViewModel : ViewModel() {
                     "$getCurrentDistrictUrl?latitude=${lat}&longitude=${long}"
             }
             if (url != null) {
-                val doc =
-                    Jsoup.connect(url)
-                        .get()
-                val body = doc.select("body")
-                val data = body.text()
-                Log.d("data", data)
-                setDistrict(
-                    data
-                )
+                kotlin.runCatching {
+                    val doc = Jsoup.connect(url).timeout(1000).get()
+                    val body = doc.select("body")
+                    val data = body.text()
+                    Log.d("data", data)
+                    setDistrict(
+                        data
+                    )
+                }.onFailure {
+                    Log.d("error", it.message.toString())
+                    delay(1000)
+                }
             }
         }.onJoin
     }
