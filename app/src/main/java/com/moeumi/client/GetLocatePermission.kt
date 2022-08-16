@@ -55,7 +55,10 @@ fun GetLocationPermission(
                 .animateContentSize(),
             contentAlignment = Alignment.Center
         ) {
-            content()
+            Column {
+                content()
+                Spacer(modifier = Modifier.height(64.dp))
+            }
         }
     }
 
