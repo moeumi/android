@@ -19,13 +19,13 @@ import com.moeumi.client.dummies.readyTo
 @Preview
 @Composable
 fun MainAppBar(address: String = readyTo) {
-    val context = LocalContext.current
+//    val context = LocalContext.current
     CenterAlignedTopAppBar(
         title = {
             Image(
                 painter = painterResource(R.drawable.contruct),
-                contentDescription = "",
-                modifier = Modifier.size(192.dp)
+                contentDescription = "메인 AppBar",
+                modifier = Modifier.size(96.dp)
             )
 //            Row(verticalAlignment = Alignment.CenterVertically) {
 //                Text(
