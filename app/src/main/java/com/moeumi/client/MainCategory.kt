@@ -1,22 +1,22 @@
 package com.moeumi.client
 
 import android.content.Intent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 
@@ -24,53 +24,61 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun MainCategoryGroup() {
     Box(
-        modifier = Modifier
-            .padding(horizontal = CARD_PADDING)
-            .fillMaxWidth()
+        modifier = Modifier.padding(start = CARD_PADDING, end = CARD_PADDING)
     ) {
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.CenterStart),
+                .height(64.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
+            Surface(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .padding(horizontal = 16.dp)
+                    .weight(1f),
+                color = Color(0, 0, 0, 0)
             ) {
-                MainCategory(title = "전체", width = (82.4 * 2).dp)
-                Spacer(modifier = Modifier.width(16.dp))
-                MainCategory(
-                    title = "독서인문",
-                    painter = painterResource(id = R.drawable.book_category),
-                    width = (82.4 * 2).dp
+                MainCategoryCircle(
+                    title = "전체",
+                    paint = painterResource(R.drawable.ic_ico_all),
+                    modifier = Modifier
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
+            Surface(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .padding(horizontal = 16.dp)
+                    .weight(1f),
+                color = Color(0, 0, 0, 0)
             ) {
-                MainCategory(
-                    title = "자기계발",
-                    painter = painterResource(id = R.drawable.up_category),
-                    width = 102.81.dp,
-                    modifier = Modifier.weight(1f)
+                MainCategoryCircle(
+                    title = "독서인문",
+                    paint = painterResource(R.drawable.ic_ico_read),
+                    modifier = Modifier
                 )
-                MainCategory(
+            }
+            Surface(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .weight(1f),
+                color = Color(0, 0, 0, 0)
+            ) {
+                MainCategoryCircle(
                     title = "체험",
-                    painter = painterResource(id = R.drawable.exper_category),
-                    width = 102.81.dp,
-                    modifier = Modifier.weight(1f)
+                    paint = painterResource(R.drawable.ic_ico_exp),
+                    modifier = Modifier
                 )
-                MainCategory(
+            }
+            Surface(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .weight(1f),
+                color = Color(0, 0, 0, 0)
+            ) {
+                MainCategoryCircle(
                     title = "유아",
-                    painter = painterResource(id = R.drawable.baby_category),
-                    width = 102.81.dp,
-                    modifier = Modifier.weight(1f)
+                    paint = painterResource(R.drawable.ic_ico_kid),
+                    modifier = Modifier
                 )
             }
         }
@@ -79,43 +87,31 @@ fun MainCategoryGroup() {
 
 @Preview
 @Composable
-fun MainCategory(
-    title: String = "전체",
-    width: Dp = 128.dp,
-    painter: Painter = painterResource(id = R.drawable.all_category),
-    modifier: Modifier = Modifier
-) {
+fun MainCategoryCircle(title: String, paint: Painter, modifier: Modifier) {
     val context = LocalContext.current
-    Box(
+    IconButton(
+        onClick = {
+            val settings = Intent(context, CategoryContentList::class.java);
+            settings.putExtra("category", title);
+            context.startActivity(
+                settings
+            )
+        },
         modifier = Modifier
-            .height(82.dp)
-            .width(width)
-            .clip(RoundedCornerShape(13.dp))
-            .background(Color.Black)
-            .clickable {
-                val settings = Intent(context, CategoryContentList::class.java);
-                settings.putExtra("category", title);
-                context.startActivity(
-                    settings
-                )
-            }
+            .border(
+                color = Color(29, 29, 29),
+                width = 1.dp,
+                shape = CircleShape
+            )
+            .clip(CircleShape)
+            .background(Color(29, 29, 29))
+            .padding(2.dp)
     ) {
-        Image(
-            painter = painter,
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
+        Icon(
+            painter = paint,
+            contentDescription = null,
+            modifier = modifier,/*.clip(CircleShape)*/
+            tint = Color.White,
         )
-//        Text(
-//            text = title,
-//            fontSize = 16.sp,
-//            fontWeight = FontWeight.ExtraBold,
-//            fontFamily = notoSanse,
-//            color = Color.White,
-//            textAlign = TextAlign.Center,
-//            modifier = Modifier
-//                .padding(8.dp)
-//                .align(Alignment.Center),
-//        )
     }
 }
