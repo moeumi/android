@@ -8,7 +8,7 @@ import com.moeumi.client.data.data_type.ContentReview
 
 @Dao
 interface ContentReviewDao {
-    @Query("SELECT * FROM ContentReview")
+    @Query("SELECT * FROM ContentReview WHERE is_favorite=1")
     fun getAll(): List<ContentReview>
 
     @Query("SELECT * FROM ContentReview WHERE contentId IN (:contentId)")
