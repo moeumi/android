@@ -3,11 +3,13 @@ package com.moeumi.client
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -29,7 +32,7 @@ fun MainCategoryGroup() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp),
+                .height(72.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -89,29 +92,38 @@ fun MainCategoryGroup() {
 @Composable
 fun MainCategoryCircle(title: String, paint: Painter, modifier: Modifier) {
     val context = LocalContext.current
-    IconButton(
-        onClick = {
-            val settings = Intent(context, CategoryContentList::class.java);
-            settings.putExtra("category", title);
-            context.startActivity(
-                settings
+    val textColor = if (isSystemInDarkTheme()) Color.White else Color.Black
+    Column {
+        IconButton(
+            onClick = {
+                val settings = Intent(context, CategoryContentList::class.java);
+                settings.putExtra("category", title);
+                context.startActivity(
+                    settings
+                )
+            },
+            modifier = Modifier
+                .border(
+                    color = Color(29, 29, 29),
+                    width = 1.dp,
+                    shape = CircleShape
+                )
+                .clip(CircleShape)
+                .background(Color(29, 29, 29))
+                .padding(2.dp)
+        ) {
+            Icon(
+                painter = paint,
+                contentDescription = null,
+                modifier = modifier,/*.clip(CircleShape)*/
+                tint = Color.White,
             )
-        },
-        modifier = Modifier
-            .border(
-                color = Color(29, 29, 29),
-                width = 1.dp,
-                shape = CircleShape
-            )
-            .clip(CircleShape)
-            .background(Color(29, 29, 29))
-            .padding(2.dp)
-    ) {
-        Icon(
-            painter = paint,
-            contentDescription = null,
-            modifier = modifier,/*.clip(CircleShape)*/
-            tint = Color.White,
+        }
+        Text(
+            text = title,
+            textAlign = TextAlign.Center,
+            color = textColor,
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
