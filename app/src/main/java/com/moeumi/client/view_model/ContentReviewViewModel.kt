@@ -3,6 +3,7 @@ package com.moeumi.client.view_model
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.moeumi.client.AppDatabase
+import com.moeumi.client.dao.ContentReviewDao
 import com.moeumi.client.data.data_type.ContentReview
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,8 +31,13 @@ class ContentReviewViewModel : ViewModel() {
     private val _isFavorite = MutableStateFlow(false)
     val isFavorite = _isFavorite.asStateFlow()
 
-    fun changeIsFavorite() {
-        _isFavorite.value = !isFavorite.value
+    fun changeIsFavorite(db:AppDatabase, cid: Int) {
+        _isFavorite.value=!_isFavorite.value
+        Log.d("isFav", _isFavorite.value.toString())
+        CoroutineScope(Dispatchers.IO).async {
+            val reviewDao = db.contentReviewDao()
+            reviewDao.updateFavorite(_isFavorite.value, cid);
+        }
     }
 
     fun getAll(db: AppDatabase) {

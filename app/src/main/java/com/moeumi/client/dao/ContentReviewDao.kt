@@ -23,6 +23,6 @@ interface ContentReviewDao {
     @Update
     fun updateAll(vararg users: ContentReview)
 
-    @Update
-    fun updateFavorite(vararg isFav: ContentReview)
+    @Query("UPDATE ContentReview SET is_favorite=:isFav WHERE contentId=:cid")
+    fun updateFavorite(isFav: Boolean, cid: Int)
 }

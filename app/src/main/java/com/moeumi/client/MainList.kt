@@ -269,7 +269,7 @@ fun ContentDetailPlanView(
                         review = ""
                     )
                 )
-                contentReviewViewModel.changeIsFavorite()
+                contentReviewViewModel.changeIsFavorite(db, contentId)
                 Log.d("insert", "insert")
             },
             modifier = Modifier
