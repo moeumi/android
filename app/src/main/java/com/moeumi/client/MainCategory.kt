@@ -93,7 +93,9 @@ fun MainCategoryGroup() {
 fun MainCategoryCircle(title: String, paint: Painter, modifier: Modifier) {
     val context = LocalContext.current
     val textColor = if (isSystemInDarkTheme()) Color.White else Color.Black
-    Column {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         IconButton(
             onClick = {
                 val settings = Intent(context, CategoryContentList::class.java);
