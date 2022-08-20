@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -226,6 +227,7 @@ fun ContentDetailPlanView(
                 .clip(shape = RoundedCornerShape((11).dp))
                 .background(color = Color(parseColor("#FF7979")))
                 .weight(8f),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 text = place,
@@ -236,8 +238,9 @@ fun ContentDetailPlanView(
                 fontSize = 14.sp,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
-                    .padding(start = 8.dp)
-                    .weight(1f),
+                    .align(CenterVertically)
+                    .wrapContentWidth()
+                    .padding(start = 8.dp),
                 maxLines = 1
             )
             Spacer(modifier = Modifier.width(16.dp))
@@ -249,9 +252,9 @@ fun ContentDetailPlanView(
                 textAlign = TextAlign.End,
                 fontSize = 14.sp,
                 modifier = Modifier
-                    .clip(shape = RoundedCornerShape((11).dp))
                     .background(color = Color(parseColor("#FF7979")))
-                    .weight(1f),
+                    .padding(end = 8.dp)
+                    .wrapContentWidth(),
             )
         }
         IconButton(
@@ -284,7 +287,6 @@ fun ContentDetailPlanView(
                     .build(),
                 contentDescription = null,
                 modifier = Modifier
-//                    .size(24.dp)
             )
         }
     }
